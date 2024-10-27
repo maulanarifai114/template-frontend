@@ -1,13 +1,12 @@
-// useHttpWithLoading.ts
 import { useCallback } from "react";
 import { Config, http, HttpResponse } from "@/utils/http";
-import { useLoadingBar } from "./useLoadingBar";
+import { useLoadingBar } from "../loading-bar/useLoadingBar";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { profileState } from "@/state/profile.state";
-import { useSnackbar } from "./useSnackbar";
+import { useSnackbar } from "../snackbar/useSnackbar";
 
-const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedirectUnauthorized = true }: { isUseLoadingBar?: boolean; isUseSnackbar?: boolean; isRedirectUnauthorized?: boolean } = { isUseLoadingBar: true, isUseSnackbar: true, isRedirectUnauthorized: true }) => {
+export const useHttp = ({ isUseLoadingBar, isUseSnackbar, isRedirectUnauthorized }: { isUseLoadingBar?: boolean; isUseSnackbar?: boolean; isRedirectUnauthorized?: boolean } = { isUseLoadingBar: true, isUseSnackbar: true, isRedirectUnauthorized: true }) => {
   const loadingBar = useLoadingBar();
   const router = useRouter();
   const [_, setProfile] = useRecoilState(profileState);
@@ -63,5 +62,3 @@ const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedirectUnaut
 
   return { get, post, put, delete: del };
 };
-
-export default useHttp;

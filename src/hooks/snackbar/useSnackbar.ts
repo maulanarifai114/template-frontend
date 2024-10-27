@@ -1,4 +1,4 @@
-import { SnackbarContext, SnackbarContextProps } from "@/contexts/SnackbarContext";
+import { SnackbarContext, SnackbarContextProps } from "@/hooks/snackbar/SnackbarContext";
 import { useContext } from "react";
 
 export const useSnackbar = (): SnackbarContextProps => {

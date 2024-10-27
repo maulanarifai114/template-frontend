@@ -1,4 +1,4 @@
-import { LoadingPageContext, LoadingPageContextProps } from "@/contexts/LoadingPageContext";
+import { LoadingPageContext, LoadingPageContextProps } from "@/hooks/loading-page/LoadingPageContext";
 import { useContext } from "react";
 
 export const useLoadingPage = (): LoadingPageContextProps => {

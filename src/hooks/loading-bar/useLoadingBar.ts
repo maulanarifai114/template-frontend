@@ -1,4 +1,4 @@
-import { LoadingBarContext, LoadingBarContextProps } from "@/contexts/LoadingBarContext";
+import { LoadingBarContext, LoadingBarContextProps } from "@/hooks/loading-bar/LoadingBarContext";
 import { useContext } from "react";
 
 export const useLoadingBar = (): LoadingBarContextProps => {

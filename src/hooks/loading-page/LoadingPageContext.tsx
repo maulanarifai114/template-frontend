@@ -4,7 +4,7 @@ import React, { createContext, useCallback, useState } from "react";
 
 export interface LoadingPageContextProps {
   start: (customChildren?: React.ReactNode) => void;
-  complete: () => void;
+  end: () => void;
 }
 
 export const LoadingPageContext = createContext<LoadingPageContextProps | undefined>(undefined);
@@ -18,7 +18,7 @@ export const LoadingPageProvider: React.FC<{ children: React.ReactNode }> = ({ c
     if (customChildren) setCustomChildren(() => customChildren);
   }, []);
 
-  const complete = useCallback(() => {
+  const end = useCallback(() => {
     setIsLoading(() => false);
     setCustomChildren(() => undefined);
   }, []);
@@ -26,7 +26,7 @@ export const LoadingPageProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const StringLoader = () => <p className="rounded-4 bg-white px-4 py-2 shadow">{customChildren ? customChildren : "Loading..."}</p>;
 
   return (
-    <LoadingPageContext.Provider value={{ start, complete }}>
+    <LoadingPageContext.Provider value={{ start, end }}>
       {isLoading && (
         <div className="fixed inset-0 left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-white/[0.75]">
           {!customChildren && <StringLoader />}
