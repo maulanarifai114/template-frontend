@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Dropdown, { DropdownOption } from "@/components/base/Dropdown";
 import Skeleton from "@/components/base/Skeleton";
 import Card from "@/components/base/Card";
+import Dialog from "@/components/base/Dialog";
 
 export default function page() {
   const [autocomplete, setAutocomplete] = useState<AutocompleteOption | null>(null);
@@ -61,6 +62,11 @@ export default function page() {
   const variableClass = (code: string, type: string) => {
     return getComputedStyle(document.documentElement).getPropertyValue(`--font-${code}-${type}`);
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpen3, setIsOpen3] = useState(false);
+  const [isOpen4, setIsOpen4] = useState(false);
 
   return (
     <main>
@@ -232,7 +238,7 @@ export default function page() {
           <Button>Label Here</Button>
         </Dropdown>
         <Dropdown options={dropdownOptions} isFullWidth>
-          <Button>Full Width for Options</Button>
+          <Button variant="secondary">Full Width for Options</Button>
         </Dropdown>
         <Dropdown options={dropdownOptions}>
           <div className="cursor-pointer rounded-lg border border-neutral-200 bg-neutral-100 p-3">Inside another element</div>
@@ -257,8 +263,35 @@ export default function page() {
             },
           ]}
         >
-          <Button>With Function</Button>
+          <Button variant="success">With Function</Button>
         </Dropdown>
+      </Container>
+      <Container title="Dialog">
+        <Button onClick={() => setIsOpen((prev) => !prev)}>Open Dialog</Button>
+        <Dialog isOpen={isOpen} onClose={(value) => setIsOpen(() => value)}>
+          Child here...
+        </Dialog>
+
+        <Button variant="secondary" onClick={() => setIsOpen2((prev) => !prev)}>
+          Custom Width
+        </Button>
+        <Dialog width="1080px" isOpen={isOpen2} onClose={(value) => setIsOpen2(() => value)}>
+          Child here...
+        </Dialog>
+
+        <Button variant="light" onClick={() => setIsOpen3((prev) => !prev)}>
+          Change Padding
+        </Button>
+        <Dialog className="p-3" isOpen={isOpen3} onClose={(value) => setIsOpen3(() => value)}>
+          Child here...
+        </Dialog>
+
+        <Button variant="success" onClick={() => setIsOpen4((prev) => !prev)}>
+          Custom Dialog
+        </Button>
+        <Dialog width="400px" className="w-full rounded-2xl bg-success-100 p-8" isOpen={isOpen4} onClose={(value) => setIsOpen4(() => value)}>
+          Child here...
+        </Dialog>
       </Container>
       <Container title="Skeleton">
         <label htmlFor="" className="mb-1 block">
