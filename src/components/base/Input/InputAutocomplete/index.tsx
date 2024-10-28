@@ -17,21 +17,20 @@ interface InputProps {
   className?: string;
   required?: boolean;
   placeholder?: string;
-  defaultValue?: AutocompleteOption | null;
+  value?: AutocompleteOption | null;
   options?: AutocompleteOption[];
   onChange?: (value: AutocompleteOption) => void;
   icon?: IconType;
 }
 
-const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(({ onChange, defaultValue, label, className, options = [], icon: Icon = MdKeyboardArrowDown, id, ...props }, ref) => {
-  const [selected, setSelected] = useState<AutocompleteOption | null | undefined>(defaultValue);
+const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(({ onChange, value, label, className, options = [], icon: Icon = MdKeyboardArrowDown, id, ...props }, ref) => {
+  const [selected, setSelected] = useState<AutocompleteOption | null | undefined>(value);
   const [queryAutocomplete, setQueryAutocomplete] = useState<string>("");
 
   const filteredOptions = queryAutocomplete === "" ? options : options.filter((item) => item.name.toLowerCase().includes(queryAutocomplete.toLowerCase()));
 
   const onChangeCombobox = useCallback(
     (value: AutocompleteOption) => {
-      console.log("value onChangeCombobox", value);
       setSelected(value);
       onChange && onChange(value);
     },
@@ -42,21 +41,22 @@ const InputAutocomplete = forwardRef<HTMLInputElement, InputProps>(({ onChange, 
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       setQueryAutocomplete(value);
-      console.log("value onChangeComboboxInput", value);
       const newValue: AutocompleteOption = { id: "", name: value };
-      console.log("newValue onChangeComboboxInput", newValue);
       setSelected(newValue);
       onChange && onChange(newValue);
     },
     [onChange],
   );
 
+  useEffect(() => {
+    setSelected(value); // Syncs with the `value` prop whenever it changes
+  }, [value]);
+
   return (
     <div className={className}>
       {label && (
         <label htmlFor={id} className="mb-1 block">
-          <span className="text-neutral-500">{label}</span>
-          {props.required && <span className="text-danger-500">*</span>}
+          <span className="text-neutral-500">{label}</span> {props.required && <span className="text-danger-500">*</span>}
         </label>
       )}
       <Combobox immediate virtual={{ options: filteredOptions }} value={selected} onChange={onChangeCombobox} onClose={() => setQueryAutocomplete("")}>

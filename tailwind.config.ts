@@ -32,6 +32,7 @@ const config: Config = {
     },
     fontFamily: {
       inter: ["var(--font-inter)", "sans-serif"],
+      monospace: 'Consolas, "Courier New", monospace',
     },
     colors: {
       white: "rgb(var(--color-white) / 1)",
