@@ -7,19 +7,19 @@ interface DialogProps {
   width?: string;
   children: React.ReactNode;
   className?: string;
+  transition?: boolean;
 }
 
-export default function Dialog({ isOpen, onClose, width, children, className }: DialogProps) {
+export default function Dialog({ isOpen, onClose, width, children, className, transition = true }: DialogProps) {
   const hasPaddingX = /\bpx-\d+\b/.test(className || "");
   const hasPaddingY = /\bpy-\d+\b/.test(className || "");
   const hasPadding = /\bp-\d+\b/.test(className || "");
-
   const hasWidthClass = /\bw-(\d+|full)\b/.test(className || "");
   const hasBackgroundClass = /\bbg-[a-zA-Z0-9]+\b/.test(className || "");
   const hasRoundedClass = /\brounded(-[a-zA-Z0-9]+)?\b/.test(className || "");
 
   return (
-    <DialogContainer open={isOpen} onClose={() => onClose(false)} className="relative z-50">
+    <DialogContainer transition={transition} open={isOpen} onClose={() => onClose(false)} className="relative z-50 transition duration-75 ease-out data-[closed]:opacity-0">
       <div className="fixed inset-0 flex w-screen cursor-pointer items-center justify-center bg-black/[0.75] p-4">
         <DialogPanel
           style={{ maxWidth: width ? width : "600px" }}

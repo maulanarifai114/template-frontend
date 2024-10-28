@@ -60,13 +60,16 @@ export default function page() {
   ];
 
   const variableClass = (code: string, type: string) => {
-    return getComputedStyle(document.documentElement).getPropertyValue(`--font-${code}-${type}`);
+    if (getComputedStyle) {
+      return getComputedStyle(document.documentElement).getPropertyValue(`--font-${code}-${type}`);
+    }
   };
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
   const [isOpen4, setIsOpen4] = useState(false);
+  const [isOpen5, setIsOpen5] = useState(false);
 
   return (
     <main>
@@ -238,10 +241,7 @@ export default function page() {
           <Button>Label Here</Button>
         </Dropdown>
         <Dropdown options={dropdownOptions} isFullWidth>
-          <Button variant="secondary">Full Width for Options</Button>
-        </Dropdown>
-        <Dropdown options={dropdownOptions}>
-          <div className="cursor-pointer rounded-lg border border-neutral-200 bg-neutral-100 p-3">Inside another element</div>
+          <Button variant="primary-dark">Full Width for Options</Button>
         </Dropdown>
         <Dropdown
           options={[
@@ -263,30 +263,43 @@ export default function page() {
             },
           ]}
         >
-          <Button variant="success">With Function</Button>
+          <Button variant="primary-outline">With Function</Button>
+        </Dropdown>
+
+        <Dropdown options={dropdownOptions}>
+          <div className="cursor-pointer rounded-lg border border-neutral-200 bg-neutral-100 p-3">Inside another element</div>
         </Dropdown>
       </Container>
       <Container title="Dialog">
-        <Button onClick={() => setIsOpen((prev) => !prev)}>Open Dialog</Button>
+        <Button variant="secondary" onClick={() => setIsOpen((prev) => !prev)}>
+          Open Dialog
+        </Button>
         <Dialog isOpen={isOpen} onClose={(value) => setIsOpen(() => value)}>
           Child here...
         </Dialog>
 
-        <Button variant="secondary" onClick={() => setIsOpen2((prev) => !prev)}>
+        <Button variant="secondary-dark" onClick={() => setIsOpen2((prev) => !prev)}>
           Custom Width
         </Button>
         <Dialog width="1080px" isOpen={isOpen2} onClose={(value) => setIsOpen2(() => value)}>
           Child here...
         </Dialog>
 
-        <Button variant="light" onClick={() => setIsOpen3((prev) => !prev)}>
+        <Button variant="secondary-light" onClick={() => setIsOpen3((prev) => !prev)}>
           Change Padding
         </Button>
         <Dialog className="p-3" isOpen={isOpen3} onClose={(value) => setIsOpen3(() => value)}>
           Child here...
         </Dialog>
 
-        <Button variant="success" onClick={() => setIsOpen4((prev) => !prev)}>
+        <Button variant="secondary-outline" onClick={() => setIsOpen5((prev) => !prev)}>
+          Without Transition
+        </Button>
+        <Dialog transition={false} isOpen={isOpen5} onClose={(value) => setIsOpen5(() => value)}>
+          Child here...
+        </Dialog>
+
+        <Button variant="light" onClick={() => setIsOpen4((prev) => !prev)}>
           Custom Dialog
         </Button>
         <Dialog width="400px" className="w-full rounded-2xl bg-success-100 p-8" isOpen={isOpen4} onClose={(value) => setIsOpen4(() => value)}>
@@ -310,7 +323,10 @@ export default function page() {
         </div>
       </Container>
       <Container title="Card">
-        <Card>Element Inside a Card</Card>
+        <Card>Shadow Card</Card>
+        <Card type="border">Bordered Card</Card>
+        <Card type="none">Without Shadow and Border</Card>
+        <Card className="p-6">Custom padding</Card>
       </Container>
     </main>
   );
