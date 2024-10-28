@@ -20,7 +20,7 @@ const InputSearch = forwardRef<HTMLInputElement, InputSearchProps>(({ label, cla
     <div className={className}>
       {label && (
         <label htmlFor={id} className="mb-1 block">
-          <span className="text-neutral-500">{label}</span> {props.required && <span className="text-danger-500">*</span>}
+          <span className="text-neutral-500">{label}</span>
         </label>
       )}
       <div className="relative">
