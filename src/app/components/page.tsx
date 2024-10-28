@@ -11,6 +11,8 @@ import InputTextArea from "@/components/base/Input/InputTextArea";
 import InputAutocomplete, { AutocompleteOption } from "@/components/base/Input/InputAutocomplete";
 import { useEffect, useState } from "react";
 import Dropdown, { DropdownOption } from "@/components/base/Dropdown";
+import Skeleton from "@/components/base/Skeleton";
+import Card from "@/components/base/Card";
 
 export default function page() {
   const [autocomplete, setAutocomplete] = useState<AutocompleteOption | null>(null);
@@ -63,7 +65,7 @@ export default function page() {
   return (
     <main>
       <Container title="Color">
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           <div className="flex flex-col">
             <div className="aspect-video w-24 bg-neutral-100"></div>
             <div className="aspect-video w-24 bg-neutral-200"></div>
@@ -257,6 +259,25 @@ export default function page() {
         >
           <Button>With Function</Button>
         </Dropdown>
+      </Container>
+      <Container title="Skeleton">
+        <label htmlFor="" className="mb-1 block">
+          Can be shape anything
+        </label>
+        <div className="flex w-64 flex-col gap-4">
+          <div className="flex w-full gap-3">
+            <div>
+              <Skeleton className="h-12 w-12 rounded-full" />
+            </div>
+            <Skeleton className="h-12 w-full rounded-lg" />
+          </div>
+          <Skeleton className="h-2 w-full rounded-lg" />
+          <Skeleton className="h-2 w-full rounded-lg" />
+          <Skeleton className="h-2 w-full rounded-lg" />
+        </div>
+      </Container>
+      <Container title="Card">
+        <Card>Element Inside a Card</Card>
       </Container>
     </main>
   );

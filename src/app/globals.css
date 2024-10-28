@@ -186,3 +186,15 @@ input[type="number"] {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   @apply cursor-pointer bg-neutral-400;
 }
+
+.custom-scrollbar-sm::-webkit-scrollbar {
+  @apply w-2 cursor-pointer bg-neutral-100;
+}
+
+.custom-scrollbar-sm::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300;
+}
+
+.custom-scrollbar-sm::-webkit-scrollbar-thumb:hover {
+  @apply cursor-pointer bg-neutral-400;
+}
