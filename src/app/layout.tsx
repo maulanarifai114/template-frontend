@@ -10,8 +10,8 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Template Frontend",
-  description: "From Wargoo To Wargoo",
+  title: "Raden's Template",
+  description: "From Raden's To Developer",
 };
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
