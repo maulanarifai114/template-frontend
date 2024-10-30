@@ -15,6 +15,7 @@ import Skeleton from "@/components/base/Skeleton";
 import Card from "@/components/base/Card";
 import Dialog from "@/components/base/Dialog";
 import Link from "next/link";
+import Container from "@/components/base/Container";
 
 export default function Components() {
   const [autocomplete, setAutocomplete] = useState<AutocompleteOption | null>(null);
@@ -341,14 +342,5 @@ export default function Components() {
         <Card className="p-6">Custom padding</Card>
       </Container>
     </main>
-  );
-}
-
-function Container({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="container flex flex-col items-start gap-4 border-b border-neutral-300 py-8">
-      <h1>{title}</h1>
-      {children}
-    </div>
   );
 }
