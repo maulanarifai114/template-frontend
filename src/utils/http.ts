@@ -1,5 +1,3 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
-
 export type Config = RequestInit & { params?: Record<string, string | number> };
 
 export interface HttpResponse<T> {
@@ -10,7 +8,7 @@ export interface HttpResponse<T> {
 
 const baseHttp = async <T = any>(url: string, method: "GET" | "POST" | "PUT" | "DELETE", body?: any, config?: Config): Promise<T> => {
   try {
-    let requestUrl = apiUrl + url;
+    let requestUrl = url;
 
     // Handle query parameters (params)
     if (method === "GET" && config?.params) {

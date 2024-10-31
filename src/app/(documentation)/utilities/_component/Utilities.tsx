@@ -5,6 +5,7 @@ import Code from "@/components/base/Code";
 import Container from "@/components/base/Container";
 import InputFile from "@/components/base/Input/InputFile";
 import InputText from "@/components/base/Input/InputText";
+import Skeleton from "@/components/base/Skeleton";
 import Documentation from "@/components/layout/Documentation";
 import { debounce } from "@/utils/debounce";
 import { formatCurrency } from "@/utils/format-currency";
@@ -408,35 +409,69 @@ function GetBase64FromFileResized() {
   const [inside, setInside] = useState("");
   const [outside, setOutside] = useState("");
 
+  const [loadingContain, seLoadingtContain] = useState(false);
+  const [loadingCover, seLoadingtCover] = useState(false);
+  const [loadingFill, seLoadingtFill] = useState(false);
+  const [loadingInside, seLoadingtInside] = useState(false);
+  const [loadingOutside, seLoadingtOutside] = useState(false);
+
   const resizeThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    seLoadingtContain(() => true);
+    seLoadingtCover(() => true);
+    seLoadingtFill(() => true);
+    seLoadingtInside(() => true);
+    seLoadingtOutside(() => true);
+
     if (file.type.startsWith("image")) {
-      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "contain" }).then((base64) => setContain(base64));
-      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "cover" }).then((base64) => setCover(base64));
-      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "fill" }).then((base64) => setFill(base64));
-      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "inside" }).then((base64) => setInside(base64));
-      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "outside" }).then((base64) => setOutside(base64));
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "contain" }).then((base64) => {
+        setContain(base64);
+        seLoadingtContain(() => false);
+      });
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "cover" }).then((base64) => {
+        setCover(base64);
+        seLoadingtCover(() => false);
+      });
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "fill" }).then((base64) => {
+        setFill(base64);
+        seLoadingtFill(() => false);
+      });
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "inside" }).then((base64) => {
+        setInside(base64);
+        seLoadingtInside(() => false);
+      });
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "outside" }).then((base64) => {
+        setOutside(base64);
+        seLoadingtOutside(() => false);
+      });
     }
   };
 
-  const Image = ({ src, label }: { src: string; label: string }) => {
-    const image = useRef<HTMLImageElement | null>(null);
+  const Image = ({ src, label, loading }: { src: string; label: string; loading: boolean }) => {
     const [size, setSize] = useState({ width: 0, height: 0 });
+    const [isLoading, setIsLoading] = useState(loading);
 
     const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
       const { naturalWidth, naturalHeight } = event.currentTarget;
       setSize({ width: naturalWidth, height: naturalHeight });
     };
 
+    useEffect(() => {
+      setIsLoading(() => loading);
+    }, [loading]);
+
     return (
-      <div className="flex flex-col gap-2">
-        <label>{label}</label>
-        <img src={src} alt="" onLoad={handleImageLoad} />
-        <p>width: {size.width}px</p>
-        <p>height: {size.height}px</p>
-      </div>
+      ((isLoading && !src) || src) && (
+        <div className="flex w-full flex-col gap-2">
+          <label>{label}</label>
+          {!isLoading && <img src={src} alt="" onLoad={handleImageLoad} />}
+          {isLoading && <Skeleton className="aspect-video w-full" />}
+          <p>width: {size.width}px</p>
+          <p>height: {size.height}px</p>
+        </div>
+      )
     );
   };
 
@@ -503,16 +538,16 @@ function GetBase64FromFileResized() {
         `}
       </Code>
       <p>Example Case :</p>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <InputFile title="Image Only" description="Resize image to 1280x720px" onChange={resizeThumbnail} />
         <Button onClick={reset}>Reset</Button>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        {contain && <Image src={contain} label="contain" />}
-        {cover && <Image src={cover} label="cover" />}
-        {fill && <Image src={fill} label="fill" />}
-        {inside && <Image src={inside} label="inside" />}
-        {outside && <Image src={outside} label="outside" />}
+      <div className="grid w-full grid-cols-2 gap-4">
+        <Image loading={loadingContain} src={contain} label="contain" />
+        <Image loading={loadingCover} src={cover} label="cover" />
+        <Image loading={loadingFill} src={fill} label="fill" />
+        <Image loading={loadingInside} src={inside} label="inside" />
+        <Image loading={loadingOutside} src={outside} label="outside" />
       </div>
     </Container>
   );

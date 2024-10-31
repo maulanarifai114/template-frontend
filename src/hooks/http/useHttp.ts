@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { profileState } from "@/state/profile.state";
 import { useSnackbar } from "../snackbar/useSnackbar";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 export const useHttp = ({ isUseLoadingBar, isUseSnackbar, isRedirectUnauthorized }: { isUseLoadingBar?: boolean; isUseSnackbar?: boolean; isRedirectUnauthorized?: boolean } = { isUseLoadingBar: true, isUseSnackbar: true, isRedirectUnauthorized: true }) => {
   const loadingBar = useLoadingBar();
@@ -34,28 +35,28 @@ export const useHttp = ({ isUseLoadingBar, isUseSnackbar, isRedirectUnauthorized
 
   const get = useCallback(
     <T>(url: string, config?: Config) => {
-      return withLoading(() => http.get<T>(url, config));
+      return withLoading(() => http.get<T>(apiUrl + url, config));
     },
     [withLoading],
   );
 
   const post = useCallback(
     <T>(url: string, body?: any, config?: Config) => {
-      return withLoading(() => http.post<T>(url, body, config));
+      return withLoading(() => http.post<T>(apiUrl + url, body, config));
     },
     [withLoading],
   );
 
   const put = useCallback(
     <T>(url: string, body?: any, config?: Config) => {
-      return withLoading(() => http.put<T>(url, body, config));
+      return withLoading(() => http.put<T>(apiUrl + url, body, config));
     },
     [withLoading],
   );
 
   const del = useCallback(
     <T>(url: string, config?: Config) => {
-      return withLoading(() => http.delete<T>(url, config));
+      return withLoading(() => http.delete<T>(apiUrl + url, config));
     },
     [withLoading],
   );
