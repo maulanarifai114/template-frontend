@@ -24,16 +24,33 @@ export default function Code({ children, block = false, allowCopy = false }: { c
 
   // Copy function
   const handleCopy = async () => {
-    if (typeof processedCode === "string") {
-      try {
-        await navigator.clipboard.writeText(processedCode);
-        setIsCopied(() => true);
-        setTimeout(() => {
-          setIsCopied(() => false);
-        }, 2000);
-      } catch (err) {
-        console.error("Failed to copy: ", err);
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(processedCode as string);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = processedCode as string;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          document.execCommand("copy");
+          textArea.remove();
+        } catch (err) {
+          textArea.remove();
+          throw new Error("Fallback copy method failed");
+        }
       }
+      setIsCopied(() => true);
+      setTimeout(() => {
+        setIsCopied(() => false);
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
     }
   };
 
@@ -41,7 +58,7 @@ export default function Code({ children, block = false, allowCopy = false }: { c
     <code className="inline-block rounded-lg border border-neutral-200 bg-neutral-100 p-1 font-monospace">{processedCode}</code>
   ) : (
     <pre className="relative inline-block max-w-full overflow-auto rounded-lg border border-neutral-200 bg-neutral-100 p-2 pr-8 font-monospace">
-      <code className="w-fit whitespace-pre p-0">{processedCode}</code>
+      <code className="relative w-fit whitespace-pre p-0">{processedCode}</code>
       {allowCopy && (
         <Button onClick={handleCopy} variant="custom" className="absolute right-2 top-2 border-0 bg-neutral-100 p-0">
           <MdCopyAll className="text-[16px]" />
