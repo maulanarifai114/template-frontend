@@ -8,13 +8,15 @@ import InputText from "@/components/base/Input/InputText";
 import Skeleton from "@/components/base/Skeleton";
 import Documentation from "@/components/layout/Documentation";
 import { debounce } from "@/utils/debounce";
-import { formatCurrency } from "@/utils/format-currency";
-import { formatNumber } from "@/utils/format-number";
-import { formatQuery } from "@/utils/format-query";
-import { generateId } from "@/utils/generate-id";
-import { getBase64FromFileResized } from "@/utils/get-base64-from-file-resized";
+import { formatCurrency } from "@/utils/formatCurrency";
+import { formatNumber } from "@/utils/formatNumber";
+import { formatQuery } from "@/utils/formatQuery";
+import { generateId } from "@/utils/generateId";
+import { getBase64FromFile } from "@/utils/getBase64FromFile";
+import { getBase64FromFileResized } from "@/utils/getBase64FromFileResized";
+import { getBlobFromBase64 } from "@/utils/getBlobFromBase64";
 import { throttle } from "@/utils/throttle";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function Type({ children }: { children: React.ReactNode }) {
   return <span className="font-monospace text-secondary-500">{children}</span>;
@@ -32,7 +34,6 @@ export default function Utilities() {
     "getBase64FromFileResized",
     "getBase64FromFile",
     "getBlobFromBase64",
-    "getBufferFromFile",
     "http",
     "slugify",
   ];
@@ -46,6 +47,8 @@ export default function Utilities() {
         <FormatQuery />
         <GenerateId />
         <GetBase64FromFileResized />
+        <GetBase64FromFile />
+        <GetBlobFromBase64 />
       </Documentation>
     </>
   );
@@ -68,7 +71,7 @@ function Debounce() {
             import React, { useState } from "react";
             import { debounce } from "@/utils/debounce";
 
-            function SearchComponent() {
+            export default function SearchComponent() {
               const [query, setQuery] = useState("");
 
               // Debounce the search function to delay handling input
@@ -80,7 +83,7 @@ function Debounce() {
               }, 500);
 
               // Update query state and call debounced search
-              const onChange = (e) => {
+              const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 handleSearch(e.target.value);
               };
 
@@ -95,8 +98,6 @@ function Debounce() {
                 </div>
               );
             }
-
-            export default SearchComponent;
           `}
       </Code>
       <Code block allowCopy>
@@ -137,7 +138,7 @@ function Throttle() {
             import React, { useState, useCallback } from "react";
             import { throttle } from "@/utils/throttle";
 
-            function ThrottleComponent() {
+            export default function ThrottleComponent() {
               const [number, setNumber] = useState(0);
 
               const handleChange = useCallback(
@@ -154,8 +155,6 @@ function Throttle() {
                 </div>
               );
             }
-
-            export default ThrottleComponent;
           `}
       </Code>
       <Code block allowCopy>
@@ -320,17 +319,21 @@ function FormatQuery() {
           import { formatQuery } from "@/utils/formatQuery";
           import { useHttp } from "@/hooks/http/useHttp";
           import { useEffect, useState } from "react";
+          interface Product {
+            id: string;
+            name: string;
+          }
 
-          function ProductComponent() {
+          export default function ProductComponent() {
             const http = useHttp();
-            const [products, setProducts] = useState<{ id: string; name: string; }[]>([]);
+            const [products, setProducts] = useState<Product[]>([]);
             const [query, setQuery] = useState({
               page: 1,
               totalPage: 10,
             });
 
             const getProducts = async (query: { page: number; totalPage: number; }) => {
-              const response = await http.get("/v1/product/list" + formatQuery(query));
+              const response = await http.get<Product[]>("/v1/product/list" + formatQuery(query));
               setProducts(response.data);
             };
 
@@ -510,8 +513,9 @@ function GetBase64FromFileResized() {
       <Code allowCopy block>
         {`
           import { getBase64FromFileResized } from "@/utils/getBase64FromFileResized";
+          import { useState } from "react";
 
-          function ResizeComponent() {
+          export default function ResizeComponent() {
             const [base64, setBase64] = useState("");
 
             const resizeThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -520,6 +524,7 @@ function GetBase64FromFileResized() {
 
               if (file.type.startsWith("image")) {
                 const base64 = await getBase64FromFileResized(file, { width: 1280, height: 720, fit: "cover" });
+                setBase64(base64);
               }
             };
 
@@ -548,6 +553,220 @@ function GetBase64FromFileResized() {
         <Image loading={loadingFill} src={fill} label="fill" />
         <Image loading={loadingInside} src={inside} label="inside" />
         <Image loading={loadingOutside} src={outside} label="outside" />
+      </div>
+    </Container>
+  );
+}
+
+function GetBase64FromFile() {
+  const [contain, setContain] = useState("");
+
+  const [loadingContain, seLoadingtContain] = useState(false);
+  const resizeThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    seLoadingtContain(() => true);
+
+    if (file.type.startsWith("image")) {
+      getBase64FromFile(file).then((base64) => {
+        setContain(base64);
+        seLoadingtContain(() => false);
+      });
+    }
+  };
+
+  const Image = ({ src, label, loading }: { src: string; label: string; loading: boolean }) => {
+    const [size, setSize] = useState({ width: 0, height: 0 });
+    const [isLoading, setIsLoading] = useState(loading);
+
+    const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+      const { naturalWidth, naturalHeight } = event.currentTarget;
+      setSize({ width: naturalWidth, height: naturalHeight });
+    };
+
+    useEffect(() => {
+      setIsLoading(() => loading);
+    }, [loading]);
+
+    return (
+      ((isLoading && !src) || src) && (
+        <div className="flex w-full flex-col gap-2">
+          <label>{label}</label>
+          {!isLoading && <img src={src} alt="" onLoad={handleImageLoad} />}
+          {isLoading && <Skeleton className="aspect-video w-full" />}
+          <p>width: {size.width}px</p>
+          <p>height: {size.height}px</p>
+        </div>
+      )
+    );
+  };
+
+  const reset = () => {
+    setContain("");
+  };
+
+  return (
+    <Container title="getBase64FromFile" monospace>
+      <p>
+        The <Code>getBase64FromFile</Code> function takes an image file, converts it to a base64 format, but not resizes.
+      </p>
+
+      <p>Example Code :</p>
+      <Code allowCopy block>
+        {`
+          import { getBase64FromFile } from "@/utils/getBase64FromFile";
+          import { useState } from "react";
+
+          export default function ResizeComponent() {
+            const [base64, setBase64] = useState("");
+
+            const convertImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+              const file = event.target.files?.[0];
+              if (!file) return;
+
+              if (file.type.startsWith("image")) {
+                const base64 = await getBase64FromFile(file);
+              }
+            };
+
+            return (
+              <div>
+                <input type="file" onChange={convertImage} />
+                <img src={base64} />
+              </div>
+            );
+          }
+        `}
+      </Code>
+      <Code allowCopy block>
+        {`
+          await getBase64Resized(file);
+        `}
+      </Code>
+      <p>Example Case :</p>
+      <div className="flex flex-wrap items-center gap-4">
+        <InputFile title="Image Only" description="Only .jpg,.jpeg,.png,.gif,.webp" accept=".jpg,.jpeg,.png,.gif,.webp" onChange={resizeThumbnail} />
+        <Button onClick={reset}>Reset</Button>
+      </div>
+      <div className="grid w-full grid-cols-4 gap-4">
+        <Image loading={loadingContain} src={contain} label="Image" />
+      </div>
+    </Container>
+  );
+}
+
+function GetBlobFromBase64() {
+  const [contain, setContain] = useState("");
+
+  const [loadingContain, seLoadingtContain] = useState(false);
+
+  const resizeThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    seLoadingtContain(() => true);
+
+    if (file.type.startsWith("image")) {
+      getBase64FromFile(file).then((base64) => {
+        setContain(base64);
+        seLoadingtContain(() => false);
+      });
+    }
+  };
+
+  const Image = ({ src, label, loading }: { src: string; label: string; loading: boolean }) => {
+    const [size, setSize] = useState({ width: 0, height: 0 });
+    const [isLoading, setIsLoading] = useState(loading);
+
+    const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+      const { naturalWidth, naturalHeight } = event.currentTarget;
+      setSize({ width: naturalWidth, height: naturalHeight });
+    };
+
+    useEffect(() => {
+      setIsLoading(() => loading);
+    }, [loading]);
+
+    return (
+      ((isLoading && !src) || src) && (
+        <div className="flex w-full flex-col gap-2">
+          <label>{label}</label>
+          {!isLoading && <img src={src} alt="" onLoad={handleImageLoad} />}
+          {isLoading && <Skeleton className="aspect-video w-full" />}
+          <p>width: {size.width}px</p>
+          <p>height: {size.height}px</p>
+        </div>
+      )
+    );
+  };
+
+  const uploadImage = async (base64: string) => {
+    const buffer = await getBlobFromBase64(base64);
+    const uploadForm = new FormData();
+    uploadForm.append("files", buffer);
+    // const response = await http.post<{ location: string }>(`/v1/media/article/upload/${article.id}`, uploadForm);
+    // return response.data.location;
+  };
+
+  return (
+    <Container title="getBlobFromBase64" monospace>
+      <p>
+        The <Code>getBlobFromBase64</Code> function converts a base64-encoded string with a MIME type into a Blob object, which can be used as a file-like object in web applications. Usually, it use with the <Code>getBase64FromFile</Code> function.
+      </p>
+
+      <p>Example Code :</p>
+      <Code allowCopy block>
+        {`
+          import { getBase64FromFile } from "@/utils/getBase64FromFile";
+          import { getBlobFromBase64 } from "@/utils/getBlobFromBase64";
+          import { useHttp } from "@/hooks/http/useHttp";
+          import { useState } from "react";
+
+          export default function ResizeComponent({ article }: { article: { id: string } }) {
+            const [base64, setBase64] = useState("");
+            const http = useHttp();
+
+            const convertImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+              const file = event.target.files?.[0];
+              if (!file) return;
+
+              if (file.type.startsWith("image")) {
+                const base64 = await getBase64FromFile(file);
+                setBase64(base64);
+              }
+            };
+
+            const uploadImage = async (base64: string) => {
+              const buffer = await getBlobFromBase64(base64);
+              const uploadForm = new FormData();
+              uploadForm.append("files", buffer);
+              const response = await http.post<{ location: string }>(\`/v1/media/article/upload/\${article.id}\`, uploadForm);
+              return response.data.location;
+            };
+
+            return (
+              <div>
+                <input type="file" onChange={convertImage} />
+                <img src={base64} />
+                <button onClick={() => uploadImage(base64)}>Upload</button>
+              </div>
+            );
+          }
+        `}
+      </Code>
+      <Code allowCopy block>
+        {`
+          await getBlobFromBase64(file);
+        `}
+      </Code>
+      <p>Example Case :</p>
+      <div className="flex flex-wrap items-center gap-4">
+        <InputFile title="Image Only" description="Only .jpg,.jpeg,.png,.gif,.webp" accept=".jpg,.jpeg,.png,.gif,.webp" onChange={resizeThumbnail} />
+        <Button onClick={() => uploadImage(contain)}>Upload (i don't have idea to upload)</Button>
+      </div>
+      <div className="grid w-full grid-cols-4 gap-4">
+        <Image loading={loadingContain} src={contain} label="Image" />
       </div>
     </Container>
   );

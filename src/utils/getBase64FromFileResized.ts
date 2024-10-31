@@ -1,5 +1,5 @@
 import { ResizeOptions } from "sharp";
-import { getBase64FromFile } from "./get-base64-from-file";
+import { getBase64FromFile } from "./getBase64FromFile";
 import { ResizeImageResponse } from "@/app/api/resize-image/route";
 
 export const getBase64FromFileResized = async (file: File, options: ResizeOptions = { width: 1920, height: 1080, fit: "cover" }): Promise<string> => {

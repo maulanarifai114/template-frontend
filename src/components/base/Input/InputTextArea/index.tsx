@@ -1,6 +1,6 @@
 "use client";
 
-import { generateId } from "@/utils/generate-id";
+import { generateId } from "@/utils/generateId";
 import { slugify } from "@/utils/slugify";
 import { forwardRef, useEffect, useState } from "react";
 
