@@ -7,23 +7,33 @@ import InputText from "@/components/base/Input/InputText";
 import { debounce } from "@/utils/debounce";
 import { formatCurrency } from "@/utils/format-currency";
 import { formatNumber } from "@/utils/format-number";
+import { slugify } from "@/utils/slugify";
 import { throttle } from "@/utils/throttle";
 import Link from "next/link";
 import { useCallback, useState } from "react";
+import { MdArrowBack } from "react-icons/md";
 
 export default function Utilities() {
   return (
-    <>
-      <div className="container pt-4">
-        <Link href="/" className="text-paragraph-link">
-          Back to Home
+    <div className="grid grid-cols-12">
+      <div className="sticky top-0 col-span-2 flex h-screen flex-col gap-4 px-4 py-8 text-h6">
+        <Link href="/">
+          <Button variant="light" className="p-2">
+            <MdArrowBack />
+          </Button>
         </Link>
+        <Link href={`#${slugify("debounce")}`}>#debounce</Link>
+        <Link href={`#${slugify("throttle")}`}>#throttle</Link>
+        <Link href={`#${slugify("formatCurrency")}`}>#formatCurrency</Link>
+        <Link href={`#${slugify("formatNumber")}`}>#formatNumber</Link>
       </div>
-      <Debounce />
-      <Throttle />
-      <FormatCurrency />
-      <FormatNumber />
-    </>
+      <div className="col-span-10">
+        <Debounce />
+        <Throttle />
+        <FormatCurrency />
+        <FormatNumber />
+      </div>
+    </div>
   );
 }
 
