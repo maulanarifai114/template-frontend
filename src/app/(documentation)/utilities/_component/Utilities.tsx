@@ -3,14 +3,17 @@
 import Button from "@/components/base/Button";
 import Code from "@/components/base/Code";
 import Container from "@/components/base/Container";
+import InputFile from "@/components/base/Input/InputFile";
 import InputText from "@/components/base/Input/InputText";
 import Documentation from "@/components/layout/Documentation";
 import { debounce } from "@/utils/debounce";
 import { formatCurrency } from "@/utils/format-currency";
 import { formatNumber } from "@/utils/format-number";
 import { formatQuery } from "@/utils/format-query";
+import { generateId } from "@/utils/generate-id";
+import { getBase64FromFileResized } from "@/utils/get-base64-from-file-resized";
 import { throttle } from "@/utils/throttle";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 function Type({ children }: { children: React.ReactNode }) {
   return <span className="font-monospace text-secondary-500">{children}</span>;
@@ -24,6 +27,13 @@ export default function Utilities() {
     "formatCurrency",
     "formatNumber",
     "formatQuery",
+    "generateId",
+    "getBase64FromFileResized",
+    "getBase64FromFile",
+    "getBlobFromBase64",
+    "getBufferFromFile",
+    "http",
+    "slugify",
   ];
   return (
     <>
@@ -33,6 +43,8 @@ export default function Utilities() {
         <FormatCurrency />
         <FormatNumber />
         <FormatQuery />
+        <GenerateId />
+        <GetBase64FromFileResized />
       </Documentation>
     </>
   );
@@ -306,16 +318,31 @@ function FormatQuery() {
         {`
           import { formatQuery } from "@/utils/formatQuery";
           import { useHttp } from "@/hooks/http/useHttp";
+          import { useEffect, useState } from "react";
 
-          const http = useHttp();
+          function ProductComponent() {
+            const http = useHttp();
+            const [products, setProducts] = useState<{ id: string; name: string; }[]>([]);
+            const [query, setQuery] = useState({
+              page: 1,
+              totalPage: 10,
+            });
 
-          const getProducts = async (query: { page: number; totalPage: number; }) => {
-            const response = await http.get("/v1/product/list" + formatQuery(query));
-          };
+            const getProducts = async (query: { page: number; totalPage: number; }) => {
+              const response = await http.get("/v1/product/list" + formatQuery(query));
+              setProducts(response.data);
+            };
 
-          useEffect(() => {
-            getProducts()
-          }, [])
+            useEffect(() => {
+              getProducts(query)
+            }, [query.page, query.totalPage]);
+
+            return products.map((product) => (
+              <div key={product.id}>
+                <p>{product.name}</p>
+              </div>
+            ))        
+          }
         `}
       </Code>
       <Code allowCopy block>
@@ -339,6 +366,154 @@ function FormatQuery() {
         </tbody>
       </table>
       <p>Result Query : {formatQuery(query)}</p>
+    </Container>
+  );
+}
+
+function GenerateId() {
+  const [generatedId, setGeneratedId] = useState("");
+
+  return (
+    <Container title="generateId" monospace>
+      <p>
+        The <Code>generateId</Code> function generates a unique ID combining the current Unix timestamp with a random string of uppercase letters.
+      </p>
+
+      <p>Example Code :</p>
+      <Code allowCopy block>
+        {`
+          import { generateId } from "@/utils/generateId";
+
+          const id = generateId();
+          console.log(id); // Outputs: "unix_timestamp + random_string"
+        `}
+      </Code>
+      <Code allowCopy block>
+        {`
+          generateId();
+        `}
+      </Code>
+      <p>Example Case :</p>
+      <Button onClick={() => setGeneratedId(() => generateId())}>Generate ID</Button>
+
+      <p>Result : {generatedId}</p>
+    </Container>
+  );
+}
+
+function GetBase64FromFileResized() {
+  const [contain, setContain] = useState("");
+  const [cover, setCover] = useState("");
+  const [fill, setFill] = useState("");
+  const [inside, setInside] = useState("");
+  const [outside, setOutside] = useState("");
+
+  const resizeThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type.startsWith("image")) {
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "contain" }).then((base64) => setContain(base64));
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "cover" }).then((base64) => setCover(base64));
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "fill" }).then((base64) => setFill(base64));
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "inside" }).then((base64) => setInside(base64));
+      getBase64FromFileResized(file, { width: 1280, height: 720, fit: "outside" }).then((base64) => setOutside(base64));
+    }
+  };
+
+  const Image = ({ src, label }: { src: string; label: string }) => {
+    const image = useRef<HTMLImageElement | null>(null);
+    const [size, setSize] = useState({ width: 0, height: 0 });
+
+    const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+      const { naturalWidth, naturalHeight } = event.currentTarget;
+      setSize({ width: naturalWidth, height: naturalHeight });
+    };
+
+    return (
+      <div className="flex flex-col gap-2">
+        <label>{label}</label>
+        <img src={src} alt="" onLoad={handleImageLoad} />
+        <p>width: {size.width}px</p>
+        <p>height: {size.height}px</p>
+      </div>
+    );
+  };
+
+  const reset = () => {
+    setContain("");
+    setCover("");
+    setFill("");
+    setInside("");
+    setOutside("");
+  };
+
+  return (
+    <Container title="getBase64FromFileResized" monospace>
+      <p>
+        The <Code>getBase64FromFileResized</Code> function takes an image file, converts it to a base64 format, resizes it based on specified options, and returns the resized image as a base64 string. It takes 5 fitment image, here it is:
+      </p>
+      <ul className="flex list-disc flex-col gap-2 pl-4">
+        <li>
+          <Code>contain</Code>
+        </li>
+        <li>
+          <Code>cover</Code>
+        </li>
+        <li>
+          <Code>fill</Code>
+        </li>
+        <li>
+          <Code>inside</Code>
+        </li>
+        <li>
+          <Code>outside</Code>
+        </li>
+      </ul>
+
+      <p>Example Code :</p>
+      <Code allowCopy block>
+        {`
+          import { getBase64FromFileResized } from "@/utils/getBase64FromFileResized";
+
+          function ResizeComponent() {
+            const [base64, setBase64] = useState("");
+
+            const resizeThumbnail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+              const file = event.target.files?.[0];
+              if (!file) return;
+
+              if (file.type.startsWith("image")) {
+                const base64 = await getBase64FromFileResized(file, { width: 1280, height: 720, fit: "cover" });
+              }
+            };
+
+            return (
+              <div>
+                <input type="file" onChange={resizeThumbnail} />
+                <img src={base64} />
+              </div>
+            );
+          }
+        `}
+      </Code>
+      <Code allowCopy block>
+        {`
+          await getBase64Resized(file, { width: 1280, height: 720, fit: "cover" });
+        `}
+      </Code>
+      <p>Example Case :</p>
+      <div className="flex items-center gap-4">
+        <InputFile title="Image Only" description="Resize image to 1280x720px" onChange={resizeThumbnail} />
+        <Button onClick={reset}>Reset</Button>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        {contain && <Image src={contain} label="contain" />}
+        {cover && <Image src={cover} label="cover" />}
+        {fill && <Image src={fill} label="fill" />}
+        {inside && <Image src={inside} label="inside" />}
+        {outside && <Image src={outside} label="outside" />}
+      </div>
     </Container>
   );
 }

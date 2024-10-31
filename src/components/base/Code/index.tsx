@@ -57,14 +57,16 @@ export default function Code({ children, block = false, allowCopy = false }: { c
   return !block ? (
     <code className="inline-block rounded-lg border border-neutral-200 bg-neutral-100 p-1 font-monospace">{processedCode}</code>
   ) : (
-    <pre className="relative inline-block max-w-full overflow-auto rounded-lg border border-neutral-200 bg-neutral-100 p-2 pr-8 font-monospace">
-      <code className="relative w-fit whitespace-pre p-0">{processedCode}</code>
-      {allowCopy && (
-        <Button onClick={handleCopy} variant="custom" className="absolute right-2 top-2 border-0 bg-neutral-100 p-0">
-          <MdCopyAll className="text-[16px]" />
-          {isCopied && <span>Copied</span>}
-        </Button>
-      )}
-    </pre>
+    <div className="max-w-full overflow-auto">
+      <pre className="relative inline-block rounded-lg border border-neutral-200 bg-neutral-100 p-2 pr-8 font-monospace">
+        <code className="relative w-fit whitespace-pre p-0">{processedCode}</code>
+        {allowCopy && (
+          <Button onClick={handleCopy} variant="custom" className="absolute right-2 top-2 border-0 bg-neutral-100 p-0">
+            <MdCopyAll className="text-[16px]" />
+            {isCopied && <span>Copied</span>}
+          </Button>
+        )}
+      </pre>
+    </div>
   );
 }

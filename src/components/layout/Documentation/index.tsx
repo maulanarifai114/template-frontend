@@ -19,7 +19,7 @@ export default function Documentation({ children, titles }: { children: React.Re
           </Link>
         ))}
       </div>
-      <div className="col-span-10 bg-white">{children}</div>
+      <div className="col-span-10 bg-white lg:sticky">{children}</div>
     </div>
   );
 }

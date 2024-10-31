@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-export const generateId = (length: number = 16) => {
+export const generateId = () => {
   let result = "";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
