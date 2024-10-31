@@ -4,7 +4,7 @@ import { MdCopyAll } from "react-icons/md";
 import Button from "../Button";
 import { useState } from "react";
 
-export default function Code({ children, inline = false, allowCopy = false }: { children?: React.ReactNode; inline?: boolean; allowCopy?: boolean }) {
+export default function Code({ children, block = false, allowCopy = false }: { children?: React.ReactNode; block?: boolean; allowCopy?: boolean }) {
   const removeLeadingWhitespace = (code: string): string => {
     const lines = code.split("\n");
     const minIndentation = lines
@@ -37,13 +37,13 @@ export default function Code({ children, inline = false, allowCopy = false }: { 
     }
   };
 
-  return inline ? (
+  return !block ? (
     <code className="inline-block rounded-lg border border-neutral-200 bg-neutral-100 p-1 font-monospace">{processedCode}</code>
   ) : (
-    <pre className="relative inline-block w-fit rounded-lg border border-neutral-200 bg-neutral-100 p-2 pr-12 font-monospace">
+    <pre className="relative inline-block w-fit rounded-lg border border-neutral-200 bg-neutral-100 p-2 pr-8 font-monospace">
       <code className="w-fit whitespace-pre p-0">{processedCode}</code>
       {allowCopy && (
-        <Button onClick={handleCopy} variant="light-outline" className="absolute right-2 top-2 p-2">
+        <Button onClick={handleCopy} variant="custom" className="absolute right-2 top-2 border-0 bg-neutral-100 p-0">
           <MdCopyAll className="text-[16px]" />
           {isCopied && <span>Copied</span>}
         </Button>

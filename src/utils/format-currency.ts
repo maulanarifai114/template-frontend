@@ -3,7 +3,7 @@ export const formatCurrency = (amount: number, locales: string = "id-ID", curren
     style: "currency",
     currency: currency,
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(amount);
 
   return formatted;

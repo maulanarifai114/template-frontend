@@ -12,6 +12,9 @@ export default function Home() {
           <Link href="/utilities" className="">
             Utilities
           </Link>
+          <Link href="/hooks" className="">
+            Hooks
+          </Link>
           <Link href="/dashboard" className="">
             Dashboard
           </Link>
