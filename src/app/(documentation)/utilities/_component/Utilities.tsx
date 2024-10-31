@@ -4,36 +4,30 @@ import Button from "@/components/base/Button";
 import Code from "@/components/base/Code";
 import Container from "@/components/base/Container";
 import InputText from "@/components/base/Input/InputText";
+import Documentation from "@/components/layout/Documentation";
 import { debounce } from "@/utils/debounce";
 import { formatCurrency } from "@/utils/format-currency";
 import { formatNumber } from "@/utils/format-number";
-import { slugify } from "@/utils/slugify";
 import { throttle } from "@/utils/throttle";
-import Link from "next/link";
 import { useCallback, useState } from "react";
-import { MdArrowBack } from "react-icons/md";
 
 export default function Utilities() {
+  const titles = [
+    //
+    "debounce",
+    "throttle",
+    "formatCurrency",
+    "formatNumber",
+  ];
   return (
-    <div className="grid grid-cols-12">
-      <div className="sticky top-0 col-span-2 flex h-screen flex-col gap-4 px-4 py-8 text-h6">
-        <Link href="/">
-          <Button variant="light" className="p-2">
-            <MdArrowBack />
-          </Button>
-        </Link>
-        <Link href={`#${slugify("debounce")}`}>#debounce</Link>
-        <Link href={`#${slugify("throttle")}`}>#throttle</Link>
-        <Link href={`#${slugify("formatCurrency")}`}>#formatCurrency</Link>
-        <Link href={`#${slugify("formatNumber")}`}>#formatNumber</Link>
-      </div>
-      <div className="col-span-10">
+    <>
+      <Documentation titles={titles}>
         <Debounce />
         <Throttle />
         <FormatCurrency />
         <FormatNumber />
-      </div>
-    </div>
+      </Documentation>
+    </>
   );
 }
 
@@ -45,13 +39,12 @@ function Debounce() {
 
   return (
     <Container title="debounce" monospace>
-      <div className="flex flex-col gap-4">
-        <div>
-          In React, <Code>debounce</Code> is often used with input fields to delay actions like API calls until the user stops typing. Here's how you could use it to handle a search input field, where the search query only updates after the user pauses typing for a moment.
-        </div>
-        <p>Example Code:</p>
-        <Code block allowCopy>
-          {`
+      <div>
+        In React, <Code>debounce</Code> is often used with input fields to delay actions like API calls until the user stops typing. Here's how you could use it to handle a search input field, where the search query only updates after the user pauses typing for a moment.
+      </div>
+      <p>Example Code:</p>
+      <Code allowCopy block>
+        {`
             import React, { useState } from "react";
             import { debounce } from "@/utils/debounce";
 
@@ -85,19 +78,18 @@ function Debounce() {
 
             export default SearchComponent;
           `}
-        </Code>
-        <Code block allowCopy>
-          {`
+      </Code>
+      <Code block allowCopy>
+        {`
             const handleDebounce = debounce((value) => {
               console.log(value);
             }, 500);
           `}
-        </Code>
-        <p>Example Case:</p>
-        <div className="flex items-center gap-4">
-          <InputText className="w-fit" placeholder="Type something..." onChange={handleChange} />
-          <p>Result in 500ms : {text}</p>
-        </div>
+      </Code>
+      <p>Example Case:</p>
+      <div className="flex items-center gap-4">
+        <InputText className="w-fit" placeholder="Type something..." onChange={handleChange} />
+        <p>Result in 500ms : {text}</p>
       </div>
     </Container>
   );
@@ -116,13 +108,12 @@ function Throttle() {
 
   return (
     <Container title="throttle" monospace>
-      <div className="flex flex-col gap-4">
-        <div>
-          In React, <Code>throttle</Code> is often used to limit how frequently a function can be executed, ensuring that it is not called more than once in a specified time period. This can be particularly useful for handling events like scrolling, resizing, and button pressing, where you may not want to perform an action on every event trigger.
-        </div>
-        <p>Example Code:</p>
-        <Code block allowCopy>
-          {`
+      <div>
+        In React, <Code>throttle</Code> is often used to limit how frequently a function can be executed, ensuring that it is not called more than once in a specified time period. This can be particularly useful for handling events like scrolling, resizing, and button pressing, where you may not want to perform an action on every event trigger.
+      </div>
+      <p>Example Code:</p>
+      <Code block allowCopy>
+        {`
             import React, { useState, useCallback } from "react";
             import { throttle } from "@/utils/throttle";
 
@@ -146,19 +137,18 @@ function Throttle() {
 
             export default ThrottleComponent;
           `}
-        </Code>
-        <Code block allowCopy>
-          {`
+      </Code>
+      <Code block allowCopy>
+        {`
             const handleChange = throttle(() => {
                 console.log("Doing Something!");
             }, 1000),
           `}
-        </Code>
-        <p>Example Case:</p>
-        <div className="flex items-center gap-4">
-          <Button onClick={handleChange}>Add Number</Button>
-          <p>Result (updated every 1s): {number}</p>
-        </div>
+      </Code>
+      <p>Example Case:</p>
+      <div className="flex items-center gap-4">
+        <Button onClick={handleChange}>Add Number</Button>
+        <p>Result (updated every 1s): {number}</p>
       </div>
     </Container>
   );

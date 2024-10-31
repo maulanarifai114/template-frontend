@@ -17,36 +17,31 @@ import Dialog from "@/components/base/Dialog";
 import Link from "next/link";
 import Container from "@/components/base/Container";
 import { slugify } from "@/utils/slugify";
+import Documentation from "@/components/layout/Documentation";
 
 export default function Components() {
+  const titles = [
+    //
+    "Color",
+    "Typography",
+    "Button",
+    "Input",
+    "Dropdown",
+    "Dialog",
+    "Skeleton",
+    "Card",
+  ];
   return (
-    <div className="grid grid-cols-12">
-      <div className="sticky top-0 col-span-2 flex h-screen flex-col gap-4 px-4 py-8 text-h6">
-        <Link href="/">
-          <Button variant="light" className="p-2">
-            <MdArrowBack />
-          </Button>
-        </Link>
-        <Link href={`#${slugify("Color")}`}>#Color</Link>
-        <Link href={`#${slugify("Typography")}`}>#Typography</Link>
-        <Link href={`#${slugify("Button")}`}>#Button</Link>
-        <Link href={`#${slugify("Input")}`}>#Input</Link>
-        <Link href={`#${slugify("Dropdown")}`}>#Dropdown</Link>
-        <Link href={`#${slugify("Dialog")}`}>#Dialog</Link>
-        <Link href={`#${slugify("Skeleton")}`}>#Skeleton</Link>
-        <Link href={`#${slugify("Card")}`}>#Card</Link>
-      </div>
-      <div className="col-span-10">
-        <ColorContainer />
-        <TypographyContainer />
-        <ButtonContainer />
-        <InputContainer />
-        <DropdownContainer />
-        <DialogContainer />
-        <SkeletonContainer />
-        <CardContainer />
-      </div>
-    </div>
+    <Documentation titles={titles}>
+      <ColorContainer />
+      <TypographyContainer />
+      <ButtonContainer />
+      <InputContainer />
+      <DropdownContainer />
+      <DialogContainer />
+      <SkeletonContainer />
+      <CardContainer />
+    </Documentation>
   );
 }
 
