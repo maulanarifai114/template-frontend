@@ -147,7 +147,7 @@ h6 {
   @apply text-link underline;
 }
 .text-paragraph-indent {
-  @apply text-indent indent-4;
+  @apply indent-4 text-indent;
 }
 
 /* Hide the "x" button in WebKit browsers (Chrome Safari Edge) */
