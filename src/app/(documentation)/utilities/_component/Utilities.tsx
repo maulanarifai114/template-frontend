@@ -15,6 +15,8 @@ import { generateId } from "@/utils/generateId";
 import { getBase64FromFile } from "@/utils/getBase64FromFile";
 import { getBase64FromFileResized } from "@/utils/getBase64FromFileResized";
 import { getBlobFromBase64 } from "@/utils/getBlobFromBase64";
+import { http } from "@/utils/http";
+import { slugify } from "@/utils/slugify";
 import { throttle } from "@/utils/throttle";
 import { useCallback, useEffect, useState } from "react";
 
@@ -29,7 +31,7 @@ export default function Utilities() {
     "throttle",
     "formatCurrency",
     "formatNumber",
-    "formatQuery",
+    // "formatQuery",
     "generateId",
     "getBase64FromFileResized",
     "getBase64FromFile",
@@ -44,11 +46,13 @@ export default function Utilities() {
         <Throttle />
         <FormatCurrency />
         <FormatNumber />
-        <FormatQuery />
+        {/* <FormatQuery /> */}
         <GenerateId />
         <GetBase64FromFileResized />
         <GetBase64FromFile />
         <GetBlobFromBase64 />
+        <Http />
+        <Slugify />
       </Documentation>
     </>
   );
@@ -493,19 +497,19 @@ function GetBase64FromFileResized() {
       </p>
       <ul className="flex list-disc flex-col gap-2 pl-4">
         <li>
-          <Code>contain</Code>
+          <Type>contain</Type>
         </li>
         <li>
-          <Code>cover</Code>
+          <Type>cover</Type>
         </li>
         <li>
-          <Code>fill</Code>
+          <Type>fill</Type>
         </li>
         <li>
-          <Code>inside</Code>
+          <Type>inside</Type>
         </li>
         <li>
-          <Code>outside</Code>
+          <Type>outside</Type>
         </li>
       </ul>
 
@@ -763,11 +767,99 @@ function GetBlobFromBase64() {
       <p>Example Case :</p>
       <div className="flex flex-wrap items-center gap-4">
         <InputFile title="Image Only" description="Only .jpg,.jpeg,.png,.gif,.webp" accept=".jpg,.jpeg,.png,.gif,.webp" onChange={resizeThumbnail} />
-        <Button onClick={() => uploadImage(contain)}>Upload (i don't have idea to upload)</Button>
+        <Button onClick={() => uploadImage(contain)}>Upload (i don't have idea where to upload)</Button>
       </div>
       <div className="grid w-full grid-cols-4 gap-4">
         <Image loading={loadingContain} src={contain} label="Image" />
       </div>
+    </Container>
+  );
+}
+
+function Http() {
+  const [data, setData] = useState<{ id: string; title: string } | null>(null);
+  const fetchData = async () => {
+    const response = await http.get<{ id: string; title: string }>("https://jsonplaceholder.typicode.com/posts/1");
+    setData(response);
+  };
+  return (
+    <Container title="http" monospace>
+      <p>
+        The <Code>http</Code> function is a custom hook that provides a convenient way to make HTTP requests in a React application. It uses the <Code>fetch</Code> API to send HTTP requests and returns the response data in a promise.
+      </p>
+
+      <p>Example Code :</p>
+      <Code allowCopy block>
+        {`
+          import { http } from "@/utils/http";
+          import { useState } from "react";
+
+          export default function HttpComponent() {
+            const [data, setData] = useState<{ id: string; title: string } | null>(null);
+
+            const fetchData = async () => {
+              const response = await http.get<{ id: string; title: string }>("https://example.com/api/data", { query: { id: "123" } });
+              setData(response);
+            };
+
+            return (
+              <div className="h-full w-full">
+                <button onClick={fetchData}>Fetch Data</button>
+                {data?.id && (
+                  <div>
+                    <p>ID: {data.id}</p>
+                    <p>Title: {data.title}</p>
+                  </div>
+                )}
+              </div>
+            );
+          }
+        `}
+      </Code>
+      <Code allowCopy block>
+        {`
+          await http.get("https://example.com/api/data", { query: { id: "123" } });
+        `}
+      </Code>
+      <p>Example Case :</p>
+      <div className="flex h-full w-full flex-col items-start gap-4">
+        <Button onClick={fetchData}>Fetch Data</Button>
+        {data?.id && (
+          <div>
+            <p>ID: {data.id}</p>
+            <p>Title: {data.title}</p>
+          </div>
+        )}
+      </div>
+    </Container>
+  );
+}
+
+function Slugify() {
+  const [param, setParam] = useState("Hello World");
+  return (
+    <Container title="slugify" monospace>
+      <p>
+        The <Code>slugify</Code> function converts a string into a slug, which is a URL-friendly version of the string. It replaces spaces with hyphens and removes special characters, making it suitable for use in URLs.
+      </p>
+      <p>Example Code :</p>
+      <Code allowCopy block>
+        {`
+          import { slugify } from "@/utils/slugify";
+
+          const param = "Hello World";
+          const slug = slugify(param);
+          console.log(slug); // hello-world
+        `}
+      </Code>
+      <Code allowCopy block>
+        {`
+          slugify(param);
+        `}
+      </Code>
+      <p>Example Case :</p>
+      <InputText title="Param" value={param} onChange={(e) => setParam(() => e.target.value)} />
+      Result : {slugify(param)}
     </Container>
   );
 }
