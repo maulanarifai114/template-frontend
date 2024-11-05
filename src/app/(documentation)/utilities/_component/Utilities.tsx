@@ -6,11 +6,11 @@ import Container from "@/components/base/Container";
 import InputFile from "@/components/base/Input/InputFile";
 import InputText from "@/components/base/Input/InputText";
 import Skeleton from "@/components/base/Skeleton";
+import Type from "@/components/base/Type";
 import Documentation from "@/components/layout/Documentation";
 import { debounce } from "@/utils/debounce";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { formatNumber } from "@/utils/formatNumber";
-import { formatQuery } from "@/utils/formatQuery";
 import { generateId } from "@/utils/generateId";
 import { getBase64FromFile } from "@/utils/getBase64FromFile";
 import { getBase64FromFileResized } from "@/utils/getBase64FromFileResized";
@@ -20,10 +20,6 @@ import { slugify } from "@/utils/slugify";
 import { throttle } from "@/utils/throttle";
 import { useCallback, useEffect, useState } from "react";
 
-function Type({ children }: { children: React.ReactNode }) {
-  return <span className="font-monospace text-secondary-500">{children}</span>;
-}
-
 export default function Utilities() {
   const titles = [
     //
@@ -31,7 +27,6 @@ export default function Utilities() {
     "throttle",
     "formatCurrency",
     "formatNumber",
-    // "formatQuery",
     "generateId",
     "getBase64FromFileResized",
     "getBase64FromFile",
@@ -46,7 +41,6 @@ export default function Utilities() {
         <Throttle />
         <FormatCurrency />
         <FormatNumber />
-        {/* <FormatQuery /> */}
         <GenerateId />
         <GetBase64FromFileResized />
         <GetBase64FromFile />
@@ -288,92 +282,6 @@ function FormatNumber() {
         <InputText type="number" value={number} placeholder="Input Number" onChange={handleChange} />
         <p>Result de-DE : {formatNumber(number, "de-DE")}</p>
       </div>
-    </Container>
-  );
-}
-
-function FormatQuery() {
-  const [query, setQuery] = useState({
-    page: "1",
-    totalPage: "10",
-  });
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  }, []);
-
-  return (
-    <Container title="formatQuery" monospace>
-      <p>
-        The <Code>formatQuery</Code> function converts an object into a URL query string format. This is useful for building URLs with query parameters from a JavaScript object. It takes 2 parameters:
-      </p>
-      <ul className="flex list-disc flex-col gap-2 pl-4">
-        <li>
-          <Code>query</Code> (<Type>object</Type>): an object with key-value pairs to format as query parameters.
-        </li>
-        <li>
-          <Code>prefix</Code> (<Type>string</Type>, default <Code>"?"</Code>): the character(s) to add at the beginning of the query string
-        </li>
-      </ul>
-      <p>Example Code :</p>
-      <Code allowCopy block>
-        {`
-          import { formatQuery } from "@/utils/formatQuery";
-          import { useHttp } from "@/hooks/http/useHttp";
-          import { useEffect, useState } from "react";
-          interface Product {
-            id: string;
-            name: string;
-          }
-
-          export default function ProductComponent() {
-            const http = useHttp();
-            const [products, setProducts] = useState<Product[]>([]);
-            const [query, setQuery] = useState({
-              page: 1,
-              totalPage: 10,
-            });
-
-            const getProducts = async (query: { page: number; totalPage: number; }) => {
-              const response = await http.get<Product[]>("/v1/product/list" + formatQuery(query));
-              setProducts(response.data);
-            };
-
-            useEffect(() => {
-              getProducts(query)
-            }, [query.page, query.totalPage]);
-
-            return products.map((product) => (
-              <div key={product.id}>
-                <p>{product.name}</p>
-              </div>
-            ))        
-          }
-        `}
-      </Code>
-      <Code allowCopy block>
-        {`
-          formatQuery(query);
-        `}
-      </Code>
-      <p>Example Case :</p>
-      <table className="border-collapse">
-        <tbody>
-          {Object.keys(query).map((key) => (
-            <tr key={key}>
-              <td width={1} className="pr-4">
-                {key}{" "}
-              </td>
-              <td className="pb-2">
-                <InputText key={key} type="text" name={key} value={query[key as keyof typeof query]} placeholder={key} onChange={handleChange} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p>Result Query : {formatQuery(query)}</p>
     </Container>
   );
 }
