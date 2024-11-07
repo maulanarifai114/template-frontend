@@ -1,7 +1,8 @@
-import { slugify } from "@/utils/slugify";
 import clsx from "clsx";
 import Link from "next/link";
 import { useMemo } from "react";
+import Code from "../Code";
+import slugify from "slugify";
 
 export default function Container({ title, monospace, children }: { title: string; monospace?: boolean; children: React.ReactNode }) {
   const slug = useMemo(() => slugify(title), [title]);
@@ -11,7 +12,12 @@ export default function Container({ title, monospace, children }: { title: strin
       <div id={slug} className="absolute top-0"></div>
       <div className={clsx({ "overflow-x-auto": monospace }, "block w-full")}>
         <Link href={`#${slug}`}>
-          <h1 className={clsx({ "w-fit rounded-lg border border-neutral-200 bg-neutral-100 p-1 px-2 font-monospace": monospace })}>{title}</h1>
+          {monospace && (
+            <Code>
+              <h1>{title}</h1>
+            </Code>
+          )}
+          {!monospace && <h1>{title}</h1>}
         </Link>
       </div>
       {children}

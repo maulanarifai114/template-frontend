@@ -1,8 +1,8 @@
 import Button from "@/components/base/Button";
-import { slugify } from "@/utils/slugify";
 import Link from "next/link";
 import React from "react";
 import { MdArrowBack } from "react-icons/md";
+import slugify from "slugify";
 
 export default function Documentation({ children, titles }: { children: React.ReactNode; titles: string[] }) {
   return (

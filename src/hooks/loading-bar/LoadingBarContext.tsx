@@ -27,11 +27,3 @@ export const LoadingBarProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     </LoadingBarContext.Provider>
   );
 };
-
-// export const useLoadingBar = (): LoadingBarContextProps => {
-//   const context = useContext(LoadingBarContext);
-//   if (!context) {
-//     throw new Error("useLoadingBar must be used within a LoadingBarProvider");
-//   }
-//   return context;
-// };

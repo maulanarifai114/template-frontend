@@ -4,25 +4,31 @@ import { MdCopyAll } from "react-icons/md";
 import Button from "../Button";
 import { useState } from "react";
 
-export default function Code({ children, block = false, allowCopy = false }: { children?: React.ReactNode; block?: boolean; allowCopy?: boolean }) {
+interface CodeProps {
+  children?: React.ReactNode;
+  block?: boolean;
+  allowCopy?: boolean;
+  fileType?: string;
+}
+
+export default function Code({ children, block = false, allowCopy = false, fileType = ".ts" }: CodeProps) {
   const removeLeadingWhitespace = (code: string): string => {
     const lines = code.split("\n");
     const minIndentation = lines
-      .filter((line) => line.trim().length > 0) // Exclude empty lines
-      .map((line) => line.search(/\S/)) // Find the index of the first non-whitespace character
-      .reduce((min, current) => Math.min(min, current), Infinity); // Find the minimum indentation level
+      .filter((line) => line.trim().length > 0)
+      .map((line) => line.search(/\S/))
+      .reduce((min, current) => Math.min(min, current), Infinity);
 
     return lines
-      .map((line) => line.slice(minIndentation)) // Remove leading whitespace based on minimum indentation
+      .map((line) => line.slice(minIndentation))
       .join("\n")
-      .trim(); // Join the lines back together
+      .trim();
   };
 
   const processedCode = typeof children === "string" ? removeLeadingWhitespace(children) : children;
 
   const [isCopied, setIsCopied] = useState(false);
 
-  // Copy function
   const handleCopy = async () => {
     try {
       if (navigator?.clipboard?.writeText) {
@@ -57,16 +63,21 @@ export default function Code({ children, block = false, allowCopy = false }: { c
   return !block ? (
     <code className="inline-block rounded-lg border border-neutral-200 bg-neutral-100 p-1 font-monospace">{processedCode}</code>
   ) : (
-    <div className="max-w-full overflow-auto">
-      <pre className="relative inline-block rounded-lg border border-neutral-200 bg-neutral-100 p-2 pr-8 font-monospace">
-        <code className="relative w-fit whitespace-pre p-0">{processedCode}</code>
+    <div className="max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+      <div className="flex w-full bg-neutral-200 p-2 text-neutral-500">
+        <span>{fileType} </span>
         {allowCopy && (
-          <Button onClick={handleCopy} variant="custom" className="absolute right-2 top-2 border-0 bg-neutral-100 p-0">
+          <Button onClick={handleCopy} variant="custom" className="ml-auto border-0 p-0">
             <MdCopyAll className="text-[16px]" />
             {isCopied && <span>Copied</span>}
           </Button>
         )}
-      </pre>
+      </div>
+      <div className="overflow-auto">
+        <pre className="w-full p-2 font-monospace">
+          <code className="w-fit whitespace-pre p-0">{processedCode}</code>
+        </pre>
+      </div>
     </div>
   );
 }

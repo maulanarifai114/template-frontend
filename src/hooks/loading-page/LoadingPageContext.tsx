@@ -23,7 +23,7 @@ export const LoadingPageProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setCustomChildren(() => undefined);
   }, []);
 
-  const StringLoader = () => <p className="rounded-4 bg-white px-4 py-2 shadow">{customChildren ? customChildren : "Loading..."}</p>;
+  const StringLoader = () => <p className="rounded bg-white px-4 py-2 shadow">{customChildren ? customChildren : "Loading..."}</p>;
 
   return (
     <LoadingPageContext.Provider value={{ start, end }}>
