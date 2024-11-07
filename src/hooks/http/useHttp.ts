@@ -14,7 +14,7 @@ export interface HttpResponse<T> {
   statusCode: number;
 }
 
-interface UseHttpProps<T = any> {
+interface UseHttpProps {
   isUseLoadingBar?: boolean;
   isUseSnackbar?: boolean;
   isRedirectUnauthorized?: boolean;
@@ -24,7 +24,7 @@ interface UseHttpProps<T = any> {
 export const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedirectUnauthorized = true, redirectUrl = "/auth/sign-in" }: UseHttpProps | undefined = {}) => {
   const loadingBar = useLoadingBar();
   const router = useRouter();
-  const [_, setProfile] = useRecoilState(profileState);
+  // const [_, setProfile] = useRecoilState(profileState);
   const snackbar = useSnackbar();
 
   const withLoading = useCallback(
@@ -37,7 +37,7 @@ export const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedire
       } catch (error: any) {
         if (error.statusCode && error.statusCode === 401 && isRedirectUnauthorized) {
           router.push(redirectUrl);
-          setProfile(null);
+          // setProfile(null);
         }
         if (isUseSnackbar) snackbar.start(error.message, "error");
         if (isUseLoadingBar) loadingBar.end();
