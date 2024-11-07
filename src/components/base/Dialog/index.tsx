@@ -19,7 +19,7 @@ export default function Dialog({ isOpen, onClose, width, children, className, tr
   const hasRoundedClass = /\brounded(-[a-zA-Z0-9]+)?\b/.test(className || "");
 
   return (
-    <DialogContainer transition={transition} open={isOpen} onClose={() => onClose(false)} className="relative z-50 transition duration-75 ease-out data-[closed]:opacity-0">
+    <DialogContainer transition={transition} open={isOpen} onClose={() => onClose(false)} className="relative z-50 transition duration-200 ease-out data-[closed]:opacity-0">
       <div className="fixed inset-0 flex w-screen cursor-pointer items-center justify-center bg-black/[0.75] p-4">
         <DialogPanel
           style={{ maxWidth: width ? width : "600px" }}
