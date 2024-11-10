@@ -49,7 +49,7 @@ export default function Documentation({ children, titles }: { children: React.Re
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12">
-      <div className="sticky top-0 z-50 col-span-2 flex flex-col overflow-hidden bg-white px-4 py-4 text-h6 shadow lg:h-screen lg:py-8 lg:shadow-none">
+      <div className="sticky top-0 z-50 col-span-2 flex flex-col overflow-hidden bg-white px-4 py-4 text-h6 border-b border-neutral-200 lg:h-screen lg:py-8 lg:borderb lg:border-r lg:border-neutral-200">
         <div className="flex gap-3">
           <Link href="/" className="w-fit">
             <Button variant="light" className="p-2">
