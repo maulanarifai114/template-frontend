@@ -2,9 +2,9 @@ import { useCallback } from "react";
 import { Config, http } from "@/utils/http";
 import { useLoadingBar } from "../loading-bar/useLoadingBar";
 import { useRouter } from "next/navigation";
-import { useRecoilState } from "recoil";
-import { profileState } from "@/state/profile.state";
 import { useSnackbar } from "../snackbar/useSnackbar";
+import { useShallow } from "zustand/react/shallow";
+import { useProfileStore } from "@/state/profile.state";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -24,7 +24,7 @@ interface UseHttpProps {
 export const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedirectUnauthorized = true, redirectUrl = "/auth/sign-in" }: UseHttpProps | undefined = {}) => {
   const loadingBar = useLoadingBar();
   const router = useRouter();
-  // const [_, setProfile] = useRecoilState(profileState);
+  const [fnProfile] = useProfileStore(useShallow((state) => [state.fn]));
   const snackbar = useSnackbar();
 
   const withLoading = useCallback(
@@ -37,7 +37,7 @@ export const useHttp = ({ isUseLoadingBar = true, isUseSnackbar = true, isRedire
       } catch (error: any) {
         if (error.statusCode && error.statusCode === 401 && isRedirectUnauthorized) {
           router.push(redirectUrl);
-          // setProfile(null);
+          fnProfile.set(null);
         }
         if (isUseSnackbar) snackbar.start(error.message, "error");
         if (isUseLoadingBar) loadingBar.end();

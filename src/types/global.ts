@@ -23,3 +23,8 @@ export interface PaginatedResponse<T> {
   total: number;
   list: T[];
 }
+
+export interface Store<T, F extends Record<string, (...args: any[]) => any>> {
+  data: T;
+  fn: F;
+}

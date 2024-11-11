@@ -15,6 +15,9 @@ export default function Home() {
           <Link href="/hooks" className="">
             Hooks
           </Link>
+          <Link href="/state" className="">
+            State
+          </Link>
           <Link href="/dashboard" className="">
             Dashboard
           </Link>
