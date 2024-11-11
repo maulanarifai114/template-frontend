@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Button from "@/components/base/Button";
 import clsx from "clsx";
 import Link from "next/link";
@@ -11,19 +11,31 @@ export default function Documentation({ children, titles }: { children: React.Re
   const [activeSection, setActiveSection] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const contentNavbar = useRef<HTMLElement>(null);
   const [contentHeight, setContentHeight] = useState("0px");
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleOpen = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
 
-  useEffect(() => {
-    if (isOpen && contentRef.current) {
-      setContentHeight(`${contentRef.current.scrollHeight}px`); // Set the height to the content's full height
+  const updateContentHeight = useCallback(() => {
+    if (window.innerWidth < 1024) {
+      setIsMobile(() => true);
+      // Screen width below 1024px for mobile
+      setContentHeight(isOpen && contentRef.current ? `${contentRef.current.scrollHeight}px` : "0px");
     } else {
-      setContentHeight("0px"); // Collapse
+      setIsMobile(() => false);
+      setContentHeight("auto"); // Keep open on larger screens
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    updateContentHeight();
+    window.addEventListener("resize", updateContentHeight);
+
+    return () => window.removeEventListener("resize", updateContentHeight);
+  }, [isOpen, updateContentHeight]);
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -47,9 +59,16 @@ export default function Documentation({ children, titles }: { children: React.Re
     return () => observer.disconnect();
   }, [titles]);
 
+  const handleHeightAfterClick = () => {
+    if (isMobile) {
+      setIsOpen(false);
+      setContentHeight("0px");
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12">
-      <div className="sticky top-0 z-50 col-span-2 flex flex-col overflow-hidden bg-white px-4 py-4 text-h6 border-b border-neutral-200 lg:h-screen lg:py-8 lg:borderb lg:border-r lg:border-neutral-200">
+      <nav ref={contentNavbar} className="sticky top-0 z-50 col-span-2 flex flex-col overflow-hidden border-b border-neutral-200 bg-white px-4 py-4 text-h6 lg:h-screen lg:border-r lg:border-neutral-200 lg:py-8">
         <div className="flex gap-3">
           <Link href="/" className="w-fit">
             <Button variant="light" className="p-2">
@@ -61,18 +80,18 @@ export default function Documentation({ children, titles }: { children: React.Re
           </Button>
         </div>
         <div ref={contentRef} style={{ height: contentHeight }} className={clsx("overflow-hidden transition-[height] duration-300 ease-in-out lg:h-auto")}>
-          <div className="flex flex-col gap-4 pt-4">
+          <div className="relative flex flex-col gap-4 pt-4">
             {titles.map((title) => {
               const slug = slugify(title);
               return (
-                <Link key={title} href={`#${slug}`} className={activeSection === slug ? "text-primary-500" : ""}>
+                <Link key={slug} onClick={handleHeightAfterClick} href={`#${slug}`} className={activeSection === slug ? "text-primary-500" : ""}>
                   #{title}
                 </Link>
               );
             })}
           </div>
         </div>
-      </div>
+      </nav>
       <div className="col-span-10 bg-white lg:sticky">{children}</div>
     </div>
   );
