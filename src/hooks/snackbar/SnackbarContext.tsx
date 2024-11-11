@@ -40,7 +40,7 @@ const Custom = forwardRef<HTMLDivElement, CustomContentProps>((props, ref) => {
 
   return (
     <SnackbarContent ref={ref}>
-      <div className={clsx({ "bg-danger-600": props.variant === "error", "bg-success-600": props.variant === "success" }, "ml-auto flex items-center gap-2 rounded px-4 py-3 text-h6 text-white")}>
+      <div className={clsx({ "bg-danger-500": props.variant === "error", "bg-success-500": props.variant === "success" }, "ml-auto flex items-center gap-2 rounded px-4 py-3 text-h6 text-white")}>
         <span className="block">{props.message}</span>
         <MdClose className="cursor-pointer" onClick={() => closeSnackbar(props.id)} />
       </div>
