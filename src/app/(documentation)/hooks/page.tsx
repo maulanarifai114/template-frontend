@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Hooks from "./_component/Hooks";
 
 export const metadata: Metadata = {
-  title: "Hooks",
+  title: "Hooks - XNGINE",
 };
 
 export default function page() {
