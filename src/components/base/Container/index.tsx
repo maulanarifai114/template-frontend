@@ -8,7 +8,7 @@ export default function Container({ title, monospace, children }: { title: strin
   const slug = useMemo(() => slugify(title), [title]);
 
   return (
-    <div id={slug} className="relative flex w-full flex-col items-start gap-4 border-b border-neutral-300 px-4 py-8">
+    <div id={slug} className="relative flex min-h-dvh w-full flex-col items-start gap-4 border-b border-neutral-300 px-4 py-8">
       <div className={clsx({ "overflow-x-auto": monospace }, "block w-full")}>
         <Link href={`#${slug}`}>
           {monospace && (
