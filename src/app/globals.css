@@ -69,15 +69,15 @@
     --font-h6-line: 16px;
     --font-h6-weight: 600;
 
-    --font-h7-size: 12px;
+    --font-h7-size: 14px;
     --font-h7-line: 16px;
     --font-h7-weight: 700;
 
-    --font-h8-size: 12px;
+    --font-h8-size: 14px;
     --font-h8-line: 16px;
     --font-h8-weight: 500;
 
-    --font-body-size: 12px;
+    --font-body-size: 14px;
     --font-body-line: 16px;
     --font-body-weight: 500;
 
@@ -85,28 +85,28 @@
     --font-small-line: 16px;
     --font-small-weight: 600;
 
-    --font-bold-size: 12px;
+    --font-bold-size: 14px;
     --font-bold-line: 16px;
     --font-bold-weight: 700;
 
-    --font-italic-size: 12px;
+    --font-italic-size: 14px;
     --font-italic-line: 16px;
     --font-italic-weight: 500;
 
-    --font-link-size: 12px;
+    --font-link-size: 14px;
     --font-link-line: 16px;
     --font-link-weight: 600;
 
-    --font-paragraph-size: 12px;
+    --font-paragraph-size: 14px;
     --font-paragraph-line: 24px;
     --font-paragraph-weight: 500;
 
-    --font-indent-size: 12px;
+    --font-indent-size: 14px;
     --font-indent-line: 24px;
     --font-indent-weight: 500;
 
     --font-xsmall-size: 8px;
-    --font-xsmall-line: 12px;
+    --font-xsmall-line: 14px;
     --font-xsmall-weight: 500;
   }
 }

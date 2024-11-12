@@ -32,7 +32,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="flex w-full flex-col border-b border-neutral-300 bg-white p-4 lg:flex-row lg:items-center">
+    <nav className="sticky top-0 flex w-full flex-col border-b border-neutral-300 bg-white p-4 lg:flex-row lg:items-center">
       <div className="flex w-full gap-4">
         <Link href="/navbar">
           <img src="/logo.png" alt="Logo" className="h-6" />
