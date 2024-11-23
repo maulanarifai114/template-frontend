@@ -13,6 +13,9 @@ export default function page() {
         <li>
           <Link href="/navbar/v2">V2</Link>
         </li>
+        <li>
+          <Link href="/navbar/v3">V3</Link>
+        </li>
       </ul>
     </main>
   );
