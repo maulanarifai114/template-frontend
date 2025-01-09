@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useMemo } from "react";
-import Code from "../Code";
+import Code from "../../base/Code";
 import slugify from "slugify";
 
 export default function Container({ title, monospace, children }: { title: string; monospace?: boolean; children: React.ReactNode }) {

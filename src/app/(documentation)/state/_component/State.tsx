@@ -6,7 +6,7 @@ import One from "./One";
 import Two from "./Two";
 import Button from "@/components/base/Button";
 import Documentation from "@/components/layout/Documentation";
-import Container from "@/components/base/Container";
+import Container from "@/components/layout/Container";
 
 export default function page() {
   const titles = [
