@@ -19,6 +19,7 @@ import { http } from "@/utils/http";
 import { slugify } from "@/utils/slugify";
 import { throttle } from "@/utils/throttle";
 import { useCallback, useEffect, useState } from "react";
+import { placeholderImage } from "@/utils/placeholderImage";
 
 export default function Utilities() {
   const titles = [
@@ -31,6 +32,7 @@ export default function Utilities() {
     "getBase64FromFileResized",
     "getBase64FromFile",
     "getBlobFromBase64",
+    "placeholderImage",
     "http",
     "slugify",
   ];
@@ -45,10 +47,29 @@ export default function Utilities() {
         <GetBase64FromFileResized />
         <GetBase64FromFile />
         <GetBlobFromBase64 />
+        <PlaceholderImage />
         <Http />
         <Slugify />
       </Documentation>
     </>
+  );
+}
+
+function PlaceholderImage() {
+  return (
+    <DocumentContainer title="placeholderImage" monospace>
+      <div className="flex gap-4">
+        <div className="size-20 overflow-hidden rounded-lg">
+          <img src={placeholderImage({ width: 512, height: 512, text: "placeholderImage" })} className="h-full w-full object-cover object-center" />
+        </div>
+        <div className="size-20 overflow-hidden rounded-lg">
+          <img src={placeholderImage({ width: 512, height: 512, text: "monospace" })} className="h-full w-full object-cover object-center" />
+        </div>
+        <div className="size-20 overflow-hidden rounded-lg">
+          <img src={placeholderImage({ width: 512, height: 512, text: "RMRA" })} className="h-full w-full object-cover object-center" />
+        </div>
+      </div>
+    </DocumentContainer>
   );
 }
 

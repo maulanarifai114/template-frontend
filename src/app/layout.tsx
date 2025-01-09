@@ -4,7 +4,11 @@ import "./globals.css";
 import RootLayout from "@/components/layout/RootLayout";
 
 const inter = localFont({
-  src: "../../public/fonts/inter.woff2",
+  // src: "../../public/fonts/inter.ttf",
+  src: [
+    { path: "../../public/fonts/inter.ttf", style: "normal" },
+    { path: "../../public/fonts/inter-italic.ttf", style: "italic" },
+  ],
   display: "swap",
   variable: "--font-inter",
 });

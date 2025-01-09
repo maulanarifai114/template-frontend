@@ -19,6 +19,7 @@ import DocumentContainer from "@/components/layout/Documentation/DocumentContain
 import { slugify } from "@/utils/slugify";
 import Documentation from "@/components/layout/Documentation";
 import Pagination from "@/components/base/Pagination";
+import clsx from "clsx";
 
 export default function Components() {
   const titles = [
@@ -108,62 +109,135 @@ function ColorContainer() {
 }
 
 function TypographyContainer() {
-  const variableClass = (code: string, type: string) => {
-    if (getComputedStyle) {
-      return getComputedStyle(document.documentElement).getPropertyValue(`--font-${code}-${type}`);
-    }
-  };
+  const [fonts, setFonts] = useState<{ name: string; size: string; line: string; weight: string }[]>([]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    const styles = window.getComputedStyle(root);
+
+    const font = [
+      {
+        name: "h1",
+        size: styles.getPropertyValue("--font-h1-size"),
+        line: styles.getPropertyValue("--font-h1-line"),
+        weight: styles.getPropertyValue("--font-h1-weight"),
+      },
+      {
+        name: "h2",
+        size: styles.getPropertyValue("--font-h2-size"),
+        line: styles.getPropertyValue("--font-h2-line"),
+        weight: styles.getPropertyValue("--font-h2-weight"),
+      },
+      {
+        name: "h3",
+        size: styles.getPropertyValue("--font-h3-size"),
+        line: styles.getPropertyValue("--font-h3-line"),
+        weight: styles.getPropertyValue("--font-h3-weight"),
+      },
+      {
+        name: "h4",
+        size: styles.getPropertyValue("--font-h4-size"),
+        line: styles.getPropertyValue("--font-h4-line"),
+        weight: styles.getPropertyValue("--font-h4-weight"),
+      },
+      {
+        name: "h5",
+        size: styles.getPropertyValue("--font-h5-size"),
+        line: styles.getPropertyValue("--font-h5-line"),
+        weight: styles.getPropertyValue("--font-h5-weight"),
+      },
+      {
+        name: "h6",
+        size: styles.getPropertyValue("--font-h6-size"),
+        line: styles.getPropertyValue("--font-h6-line"),
+        weight: styles.getPropertyValue("--font-h6-weight"),
+      },
+      {
+        name: "h7",
+        size: styles.getPropertyValue("--font-h7-size"),
+        line: styles.getPropertyValue("--font-h7-line"),
+        weight: styles.getPropertyValue("--font-h7-weight"),
+      },
+      {
+        name: "h8",
+        size: styles.getPropertyValue("--font-h8-size"),
+        line: styles.getPropertyValue("--font-h8-line"),
+        weight: styles.getPropertyValue("--font-h8-weight"),
+      },
+      {
+        name: "body",
+        size: styles.getPropertyValue("--font-body-size"),
+        line: styles.getPropertyValue("--font-body-line"),
+        weight: styles.getPropertyValue("--font-body-weight"),
+      },
+      {
+        name: "small",
+        size: styles.getPropertyValue("--font-small-size"),
+        line: styles.getPropertyValue("--font-small-line"),
+        weight: styles.getPropertyValue("--font-small-weight"),
+      },
+      {
+        name: "bold",
+        size: styles.getPropertyValue("--font-bold-size"),
+        line: styles.getPropertyValue("--font-bold-line"),
+        weight: styles.getPropertyValue("--font-bold-weight"),
+      },
+      {
+        name: "italic",
+        size: styles.getPropertyValue("--font-italic-size"),
+        line: styles.getPropertyValue("--font-italic-line"),
+        weight: styles.getPropertyValue("--font-italic-weight"),
+      },
+      {
+        name: "link",
+        size: styles.getPropertyValue("--font-link-size"),
+        line: styles.getPropertyValue("--font-link-line"),
+        weight: styles.getPropertyValue("--font-link-weight"),
+      },
+      {
+        name: "paragraph",
+        size: styles.getPropertyValue("--font-paragraph-size"),
+        line: styles.getPropertyValue("--font-paragraph-line"),
+        weight: styles.getPropertyValue("--font-paragraph-weight"),
+      },
+      {
+        name: "indent",
+        size: styles.getPropertyValue("--font-indent-size"),
+        line: styles.getPropertyValue("--font-indent-line"),
+        weight: styles.getPropertyValue("--font-indent-weight"),
+      },
+      {
+        name: "xsmall",
+        size: styles.getPropertyValue("--font-xsmall-size"),
+        line: styles.getPropertyValue("--font-xsmall-line"),
+        weight: styles.getPropertyValue("--font-xsmall-weight"),
+      },
+    ];
+
+    setFonts(font);
+  }, []);
 
   return (
     <DocumentContainer title="Typography">
-      <h1 className="mt-4">
-        Heading 1 - {variableClass("h1", "size")}/{variableClass("h1", "line")} - {variableClass("h1", "weight")}
-      </h1>
-      <h2>
-        Heading 2 - {variableClass("h2", "size")}/{variableClass("h2", "line")} - {variableClass("h2", "weight")}
-      </h2>
-      <h3>
-        Heading 3 - {variableClass("h3", "size")}/{variableClass("h3", "line")} - {variableClass("h3", "weight")}
-      </h3>
-      <h4>
-        Heading 4 - {variableClass("h4", "size")}/{variableClass("h4", "line")} - {variableClass("h4", "weight")}
-      </h4>
-      <h5>
-        Heading 5 - {variableClass("h5", "size")}/{variableClass("h5", "line")} - {variableClass("h5", "weight")}
-      </h5>
-      <h6>
-        Heading 6 - {variableClass("h6", "size")}/{variableClass("h6", "line")} - {variableClass("h6", "weight")}
-      </h6>
-      <p className="text-h7">
-        Heading 7 - {variableClass("h7", "size")}/{variableClass("h7", "line")} - {variableClass("h7", "weight")}
-      </p>
-      <p className="text-h8">
-        Heading 8 - {variableClass("h8", "size")}/{variableClass("h8", "line")} - {variableClass("h8", "weight")}
-      </p>
-      <p className="text-body">
-        Paragraph Body - {variableClass("body", "size")}/{variableClass("body", "line")} - {variableClass("body", "weight")}
-      </p>
-      <p className="text-small">
-        Paragraph Small - {variableClass("small", "size")}/{variableClass("small", "line")} - {variableClass("small", "weight")}
-      </p>
-      <p className="text-bold">
-        Paragraph Bold - {variableClass("bold", "size")}/{variableClass("bold", "line")} - {variableClass("bold", "weight")}
-      </p>
-      <p className="text-paragraph-italic">
-        Paragraph Italic - {variableClass("italic", "size")}/{variableClass("italic", "line")} - {variableClass("italic", "weight")}
-      </p>
-      <p className="text-paragraph-link">
-        Paragraph Link - {variableClass("link", "size")}/{variableClass("link", "line")} - {variableClass("link", "weight")}
-      </p>
-      <p className="text-paragraph">
-        Paragraph - {variableClass("paragraph", "size")}/{variableClass("paragraph", "line")} - {variableClass("paragraph", "weight")}
-      </p>
-      <p className="text-paragraph-indent">
-        Paragraph Indent - {variableClass("indent", "size")}/{variableClass("indent", "line")} - {variableClass("indent", "weight")}
-      </p>
-      <p className="text-xsmall">
-        Paragraph Extra Small - {variableClass("xsmall", "size")}/{variableClass("xsmall", "line")} - {variableClass("xsmall", "weight")}
-      </p>
+      <>
+        {fonts.map((font) => (
+          <div key={font.name}>
+            <p
+              className={clsx(
+                {
+                  "text-paragraph-italic": font.name === "italic",
+                  "text-paragraph-link": font.name === "link",
+                  "text-paragraph-indent": font.name === "indent",
+                },
+                `text-${font.name}`,
+              )}
+            >
+              <span className="capitalize">{font.name}</span> - {font.size}/{font.line} - {font.weight}
+            </p>
+          </div>
+        ))}
+      </>
     </DocumentContainer>
   );
 }
