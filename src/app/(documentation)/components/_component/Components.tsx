@@ -18,6 +18,7 @@ import Link from "next/link";
 import Container from "@/components/base/Container";
 import { slugify } from "@/utils/slugify";
 import Documentation from "@/components/layout/Documentation";
+import Pagination from "@/components/base/Pagination";
 
 export default function Components() {
   const titles = [
@@ -30,6 +31,7 @@ export default function Components() {
     "Dialog",
     "Skeleton",
     "Card",
+    "Pagination",
   ];
   return (
     <Documentation titles={titles}>
@@ -41,6 +43,7 @@ export default function Components() {
       <DialogContainer />
       <SkeletonContainer />
       <CardContainer />
+      <PaginationContainer />
     </Documentation>
   );
 }
@@ -397,6 +400,23 @@ function CardContainer() {
       <Card type="border">Bordered Card</Card>
       <Card type="none">Without Shadow and Border</Card>
       <Card className="p-6">Custom padding</Card>
+    </Container>
+  );
+}
+
+function PaginationContainer() {
+  const [page, setPage] = useState(1);
+  const totalItems = 1000;
+  const pageSize = 5;
+
+  return (
+    <Container title="Pagination">
+      Current Page : {page}
+      <br />
+      Page Size : {pageSize}
+      <br />
+      Total Items : {totalItems}
+      <Pagination showFirstLastButton totalItems={totalItems} onPageChange={(currentPage) => setPage(() => +currentPage)} pageSize={pageSize} page={page} />
     </Container>
   );
 }
