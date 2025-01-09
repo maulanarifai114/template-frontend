@@ -306,11 +306,11 @@ function DropdownContainer() {
           },
           {
             text: "href Options",
-            href: "/components",
+            href: "/docs/components",
           },
           {
             text: "Both onClick and Href",
-            href: "/components",
+            href: "/docs/components",
             onClick: () => alert("Both onClick and Href"),
           },
         ]}

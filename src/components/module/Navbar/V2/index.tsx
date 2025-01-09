@@ -41,17 +41,17 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
     {
       label: "Home",
       icon: <MdHome />,
-      href: "/navbar",
+      href: "/docs/navbar",
     },
     {
       label: "About",
       icon: <MdInfo />,
-      href: "/navbar",
+      href: "/docs/navbar",
     },
     {
       label: "Contact",
       icon: <MdLocalPhone />,
-      href: "/navbar",
+      href: "/docs/navbar",
     },
   ];
 
@@ -59,7 +59,7 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
     <>
       <nav ref={navRef} className="sticky top-0 z-50 flex w-full flex-col border-b border-neutral-300 bg-white p-4 lg:flex-row lg:items-center">
         <div className="flex w-full gap-4">
-          <Link href="/navbar">
+          <Link href="/docs/navbar">
             <img src="/logo.png" alt="Logo" className="h-6" />
           </Link>
           <Button onClick={handleOpen} variant="light" className="ml-auto h-8 w-8 p-0 text-h4 lg:hidden">

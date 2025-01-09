@@ -67,19 +67,19 @@ export default function Documentation({ children, titles }: { children: React.Re
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12">
-      <nav ref={contentNavbar} className="sticky top-0 z-50 col-span-2 flex flex-col overflow-hidden border-b border-neutral-200 bg-white px-4 py-4 text-h6 lg:h-screen lg:border-r lg:border-neutral-200 lg:py-8">
+    <div className="flex">
+      <nav ref={contentNavbar} className="sticky top-0 z-50 col-span-2 flex h-screen min-w-48 shrink-0 flex-col overflow-hidden border-b border-r border-neutral-200 bg-white px-4 py-8 text-h6">
         <div className="flex gap-3">
-          <Link href="/" className="w-fit">
+          <Link href="/docs" className="w-fit">
             <Button variant="light" className="p-2">
               <MdArrowBack />
             </Button>
           </Link>
-          <Button onClick={handleOpen} variant="light" className="ml-auto p-2 lg:hidden">
+          {/* <Button onClick={handleOpen} variant="light" className="ml-auto p-2 lg:hidden">
             <MdMenu />
-          </Button>
+          </Button> */}
         </div>
-        <div ref={contentRef} style={{ height: contentHeight }} className={clsx("overflow-hidden transition-[height] duration-300 ease-in-out lg:h-auto")}>
+        <div ref={contentRef} style={{ height: contentHeight }} className={clsx("h-auto overflow-hidden transition-[height] duration-300 ease-in-out")}>
           <div className="relative flex flex-col gap-4 pt-4">
             {titles.map((title) => {
               const slug = slugify(title);
@@ -92,7 +92,7 @@ export default function Documentation({ children, titles }: { children: React.Re
           </div>
         </div>
       </nav>
-      <div className="col-span-10 bg-white lg:sticky">{children}</div>
+      <div className="bg-white lg:sticky">{children}</div>
     </div>
   );
 }
