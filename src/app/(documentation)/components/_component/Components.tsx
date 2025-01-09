@@ -15,7 +15,7 @@ import Skeleton from "@/components/base/Skeleton";
 import Card from "@/components/base/Card";
 import Dialog from "@/components/base/Dialog";
 import Link from "next/link";
-import Container from "@/components/layout/Documentation/DocumentContainer";
+import DocumentContainer from "@/components/layout/Documentation/DocumentContainer";
 import { slugify } from "@/utils/slugify";
 import Documentation from "@/components/layout/Documentation";
 import Pagination from "@/components/base/Pagination";
