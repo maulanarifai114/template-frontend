@@ -6,7 +6,7 @@ import One from "./One";
 import Two from "./Two";
 import Button from "@/components/base/Button";
 import Documentation from "@/components/layout/Documentation";
-import Container from "@/components/layout/Container";
+import Container from "@/components/layout/Documentation/DocumentContainer";
 
 export default function page() {
   const titles = [
@@ -25,7 +25,7 @@ export default function page() {
 function Profile() {
   const [profile, fullName, fnProfile] = useProfileStore(useShallow((state) => [state.data, state.fn.getFullName(), state.fn]));
   return (
-    <Container title="ExampleProfile" monospace>
+    <DocumentContainer title="ExampleProfile" monospace>
       <One />
       <Two />
       <p>
@@ -33,6 +33,6 @@ function Profile() {
         fullName : {fullName}
       </p>
       <Button onClick={() => fnProfile.set(null)}>Reset</Button>
-    </Container>
+    </DocumentContainer>
   );
 }

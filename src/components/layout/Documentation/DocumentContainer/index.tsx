@@ -1,10 +1,10 @@
+import Code from "@/components/base/Code";
 import clsx from "clsx";
 import Link from "next/link";
 import { useMemo } from "react";
-import Code from "../../base/Code";
 import slugify from "slugify";
 
-export default function Container({ title, monospace, children }: { title: string; monospace?: boolean; children: React.ReactNode }) {
+export default function DocumentContainer({ title, monospace, children }: { title: string; monospace?: boolean; children: React.ReactNode }) {
   const slug = useMemo(() => slugify(title), [title]);
 
   return (

@@ -3,7 +3,7 @@
 import { UsersResponse } from "@/app/api/v1/users/route";
 import Button from "@/components/base/Button";
 import Code from "@/components/base/Code";
-import Container from "@/components/layout/Container";
+import Container from "@/components/layout/Documentation/DocumentContainer";
 import InputFile from "@/components/base/Input/InputFile";
 import InputText from "@/components/base/Input/InputText";
 import Skeleton from "@/components/base/Skeleton";
@@ -47,7 +47,7 @@ function UseHttp() {
   };
 
   return (
-    <Container title="useHttp" monospace>
+    <DocumentContainer title="useHttp" monospace>
       <div>
         The <Code>useHttp</Code> custom hook is a utility for making HTTP requests with optional features like loading indicators, error notifications, and automatic redirection when unauthorized access occurs.
       </div>
@@ -158,7 +158,7 @@ function UseHttp() {
           ))}
         </ul>
       )}
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -180,7 +180,7 @@ function UseLoadingBar() {
   };
 
   return (
-    <Container title="useLoadingBar" monospace>
+    <DocumentContainer title="useLoadingBar" monospace>
       <div>
         The <Code>useLoadingBar</Code> is designed to make it easy to show a loading bar at the top of the app during actions like loading data or submitting forms. Here's how it works and how to use it.
       </div>
@@ -227,7 +227,7 @@ function UseLoadingBar() {
         <Button onClick={getData}>Example Loading Bar</Button>
         <Button onClick={stopLoadingBar}>Ends it here</Button>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -272,7 +272,7 @@ function UseLoadingPage() {
   };
 
   return (
-    <Container title="useLoadingPage" monospace>
+    <DocumentContainer title="useLoadingPage" monospace>
       <div>
         The <Code>loadingPage</Code> provides a customizable full-page loading overlay that you can trigger from any component within your app. It uses React Context to expose two main actions: start and end, which show and hide the loading overlay respectively.
       </div>
@@ -320,7 +320,7 @@ function UseLoadingPage() {
         <Button onClick={loading2}>Custom Message</Button>
         <Button onClick={loading3}>Custom with HTML</Button>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -336,7 +336,7 @@ function UseSnackbar() {
   };
 
   return (
-    <Container title="useSnackbar" monospace>
+    <DocumentContainer title="useSnackbar" monospace>
       <div>
         The <Code>useSnackbar</Code> sets up a custom Snackbar notification system for React applications using the notistack library, which enables stackable snackbars (toasts) with customizable styles and durations.
       </div>
@@ -378,6 +378,6 @@ function UseSnackbar() {
           Error Snackbar
         </Button>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }

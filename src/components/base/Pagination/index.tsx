@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Button from "../Button";
+import Button from "@/components/base/Button";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 interface PaginationProps {
@@ -49,7 +49,7 @@ export default function Pagination({ totalItems, page, showFirstLastButton, page
 }
 
 // import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-// import Button from "../Button";
+// import Button from "@/components/base/Button";
 // import clsx from "clsx";
 
 // interface PaginationProps {

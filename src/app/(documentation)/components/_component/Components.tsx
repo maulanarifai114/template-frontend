@@ -15,7 +15,7 @@ import Skeleton from "@/components/base/Skeleton";
 import Card from "@/components/base/Card";
 import Dialog from "@/components/base/Dialog";
 import Link from "next/link";
-import Container from "@/components/layout/Container";
+import Container from "@/components/layout/Documentation/DocumentContainer";
 import { slugify } from "@/utils/slugify";
 import Documentation from "@/components/layout/Documentation";
 import Pagination from "@/components/base/Pagination";
@@ -50,7 +50,7 @@ export default function Components() {
 
 function ColorContainer() {
   return (
-    <Container title="Color">
+    <DocumentContainer title="Color">
       <div className="flex flex-wrap gap-4">
         <div className="flex flex-col">
           <p className="mb-3">Neutral</p>
@@ -103,7 +103,7 @@ function ColorContainer() {
           <div className="aspect-video w-24 bg-success-600"></div>
         </div>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -115,7 +115,7 @@ function TypographyContainer() {
   };
 
   return (
-    <Container title="Typography">
+    <DocumentContainer title="Typography">
       <h1 className="mt-4">
         Heading 1 - {variableClass("h1", "size")}/{variableClass("h1", "line")} - {variableClass("h1", "weight")}
       </h1>
@@ -164,13 +164,13 @@ function TypographyContainer() {
       <p className="text-xsmall">
         Paragraph Extra Small - {variableClass("xsmall", "size")}/{variableClass("xsmall", "line")} - {variableClass("xsmall", "weight")}
       </p>
-    </Container>
+    </DocumentContainer>
   );
 }
 
 function ButtonContainer() {
   return (
-    <Container title="Button">
+    <DocumentContainer title="Button">
       <div className="flex w-full flex-wrap items-center gap-4">
         <Button variant="primary-dark">primary-dark</Button>
         <Button variant="primary">primary</Button>
@@ -199,7 +199,7 @@ function ButtonContainer() {
         <Button variant="success">success</Button>
         <Button variant="success-outline">success-outline</Button>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -236,7 +236,7 @@ function InputContainer() {
   }, []);
 
   return (
-    <Container title="Input">
+    <DocumentContainer title="Input">
       <InputText label="Text" placeholder="e.g. Input Text Here..." value={text} required onChange={(e) => setText(() => e.target.value)} />
       <InputPassword label="Password" placeholder="e.g. Input Password Here..." required onChange={(e) => console.log(e.target.value)} />
       <InputSearch label="Search" placeholder="e.g. Input Search Here..." onChange={(e) => console.log(e.target.value)} />
@@ -270,7 +270,7 @@ function InputContainer() {
           </p>
         </div>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -288,7 +288,7 @@ function DropdownContainer() {
   ];
 
   return (
-    <Container title="Dropdown">
+    <DocumentContainer title="Dropdown">
       <Dropdown options={dropdownOptions}>
         <Button>Label Here</Button>
       </Dropdown>
@@ -321,7 +321,7 @@ function DropdownContainer() {
       <Dropdown options={dropdownOptions}>
         <div className="cursor-pointer rounded-lg border border-neutral-200 bg-neutral-100 p-3">Inside another element</div>
       </Dropdown>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -333,7 +333,7 @@ function DialogContainer() {
   const [isOpen5, setIsOpen5] = useState(false);
 
   return (
-    <Container title="Dialog">
+    <DocumentContainer title="Dialog">
       <Button variant="secondary" onClick={() => setIsOpen((prev) => !prev)}>
         Open Dialog
       </Button>
@@ -368,13 +368,13 @@ function DialogContainer() {
       <Dialog width="400px" className="w-full rounded-2xl bg-success-100 p-8" isOpen={isOpen4} onClose={(value) => setIsOpen4(() => value)}>
         Child here...
       </Dialog>
-    </Container>
+    </DocumentContainer>
   );
 }
 
 function SkeletonContainer() {
   return (
-    <Container title="Skeleton">
+    <DocumentContainer title="Skeleton">
       <label htmlFor="" className="mb-1 block">
         Can be shape anything
       </label>
@@ -389,18 +389,18 @@ function SkeletonContainer() {
         <Skeleton className="h-2 w-full rounded-lg" />
         <Skeleton className="h-2 w-full rounded-lg" />
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
 function CardContainer() {
   return (
-    <Container title="Card">
+    <DocumentContainer title="Card">
       <Card>Shadow Card</Card>
       <Card type="border">Bordered Card</Card>
       <Card type="none">Without Shadow and Border</Card>
       <Card className="p-6">Custom padding</Card>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -410,13 +410,13 @@ function PaginationContainer() {
   const pageSize = 5;
 
   return (
-    <Container title="Pagination">
+    <DocumentContainer title="Pagination">
       Current Page : {page}
       <br />
       Page Size : {pageSize}
       <br />
       Total Items : {totalItems}
       <Pagination showFirstLastButton totalItems={totalItems} onPageChange={(currentPage) => setPage(() => +currentPage)} pageSize={pageSize} page={page} />
-    </Container>
+    </DocumentContainer>
   );
 }

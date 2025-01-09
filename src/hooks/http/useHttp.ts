@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { Config, http } from "@/utils/http";
-import { useLoadingBar } from "../loading-bar/useLoadingBar";
+import { useLoadingBar } from "@/hooks/loading-bar/useLoadingBar";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "../snackbar/useSnackbar";
+import { useSnackbar } from "@/hooks/snackbar/useSnackbar";
 import { useShallow } from "zustand/react/shallow";
 import { useProfileStore } from "@/state/profile.state";
 

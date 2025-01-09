@@ -1,8 +1,8 @@
 "use client";
 
 import { MdCopyAll } from "react-icons/md";
-import Button from "../Button";
 import { useState } from "react";
+import Button from "@/components/base/Button";
 
 interface CodeProps {
   children?: React.ReactNode;

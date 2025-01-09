@@ -2,7 +2,7 @@
 
 import Button from "@/components/base/Button";
 import Code from "@/components/base/Code";
-import Container from "@/components/layout/Container";
+import Container from "@/components/layout/Documentation/DocumentContainer";
 import InputFile from "@/components/base/Input/InputFile";
 import InputText from "@/components/base/Input/InputText";
 import Skeleton from "@/components/base/Skeleton";
@@ -59,7 +59,7 @@ function Debounce() {
   }, 500);
 
   return (
-    <Container title="debounce" monospace>
+    <DocumentContainer title="debounce" monospace>
       <div>
         In React, <Code>debounce</Code> is often used with input fields to delay actions like API calls until the user stops typing. Here's how you could use it to handle a search input field, where the search query only updates after the user pauses typing for a moment.
       </div>
@@ -110,7 +110,7 @@ function Debounce() {
         <InputText className="w-fit" placeholder="Type something..." onChange={handleChange} />
         <p>Result in 500ms : {text}</p>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -126,7 +126,7 @@ function Throttle() {
   );
 
   return (
-    <Container title="throttle" monospace>
+    <DocumentContainer title="throttle" monospace>
       <div>
         In React, <Code>throttle</Code> is often used to limit how frequently a function can be executed, ensuring that it is not called more than once in a specified time period. This can be particularly useful for handling events like scrolling, resizing, and button pressing, where you may not want to perform an action on every event trigger.
       </div>
@@ -167,7 +167,7 @@ function Throttle() {
         <Button onClick={handleChange}>Add Number</Button>
         <p>Result (updated every 1s): {number}</p>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -178,7 +178,7 @@ function FormatCurrency() {
   }, []);
 
   return (
-    <Container title="formatCurrency" monospace>
+    <DocumentContainer title="formatCurrency" monospace>
       <p>
         The <Code>formatCurrency</Code> function formats a number as a currency string. It takes three parameters:
       </p>
@@ -227,7 +227,7 @@ function FormatCurrency() {
         <InputText type="number" value={number} placeholder="Input Number" onChange={handleChange} />
         <p>Result JPY : {formatCurrency(number, "ja-JP", "JPY")}</p>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -238,7 +238,7 @@ function FormatNumber() {
   }, []);
 
   return (
-    <Container title="formatNumber" monospace>
+    <DocumentContainer title="formatNumber" monospace>
       <p>
         The <Code>formatNumber</Code> function formats a number with locale-specific grouping and decimal places, making it easier to read in various regional formats. It takes two parameters:
       </p>
@@ -282,7 +282,7 @@ function FormatNumber() {
         <InputText type="number" value={number} placeholder="Input Number" onChange={handleChange} />
         <p>Result de-DE : {formatNumber(number, "de-DE")}</p>
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -290,7 +290,7 @@ function GenerateId() {
   const [generatedId, setGeneratedId] = useState("");
 
   return (
-    <Container title="generateId" monospace>
+    <DocumentContainer title="generateId" monospace>
       <p>
         The <Code>generateId</Code> function generates a unique ID combining the current Unix timestamp with a random string of uppercase letters.
       </p>
@@ -313,7 +313,7 @@ function GenerateId() {
       <Button onClick={() => setGeneratedId(() => generateId())}>Generate ID</Button>
 
       <p>Result : {generatedId}</p>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -399,7 +399,7 @@ function GetBase64FromFileResized() {
   };
 
   return (
-    <Container title="getBase64FromFileResized" monospace>
+    <DocumentContainer title="getBase64FromFileResized" monospace>
       <p>
         The <Code>getBase64FromFileResized</Code> function takes an image file, converts it to a base64 format, resizes it based on specified options, and returns the resized image as a base64 string. It takes 5 fitment image, here it is:
       </p>
@@ -466,7 +466,7 @@ function GetBase64FromFileResized() {
         <Image loading={loadingInside} src={inside} label="inside" />
         <Image loading={loadingOutside} src={outside} label="outside" />
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -519,7 +519,7 @@ function GetBase64FromFile() {
   };
 
   return (
-    <Container title="getBase64FromFile" monospace>
+    <DocumentContainer title="getBase64FromFile" monospace>
       <p>
         The <Code>getBase64FromFile</Code> function takes an image file, converts it to a base64 format, but not resizes.
       </p>
@@ -564,7 +564,7 @@ function GetBase64FromFile() {
       <div className="grid w-full grid-cols-4 gap-4">
         <Image loading={loadingContain} src={contain} label="Image" />
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -622,7 +622,7 @@ function GetBlobFromBase64() {
   };
 
   return (
-    <Container title="getBlobFromBase64" monospace>
+    <DocumentContainer title="getBlobFromBase64" monospace>
       <p>
         The <Code>getBlobFromBase64</Code> function converts a base64-encoded string with a MIME type into a Blob object, which can be used as a file-like object in web applications. Usually, it use with the <Code>getBase64FromFile</Code> function.
       </p>
@@ -680,7 +680,7 @@ function GetBlobFromBase64() {
       <div className="grid w-full grid-cols-4 gap-4">
         <Image loading={loadingContain} src={contain} label="Image" />
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
@@ -691,7 +691,7 @@ function Http() {
     setData(response);
   };
   return (
-    <Container title="http" monospace>
+    <DocumentContainer title="http" monospace>
       <p>
         The <Code>http</Code> function is a custom hook that provides a convenient way to make HTTP requests in a React application. It uses the <Code>fetch</Code> API to send HTTP requests and returns the response data in a promise.
       </p>
@@ -739,14 +739,14 @@ function Http() {
           </div>
         )}
       </div>
-    </Container>
+    </DocumentContainer>
   );
 }
 
 function Slugify() {
   const [param, setParam] = useState("Hello World");
   return (
-    <Container title="slugify" monospace>
+    <DocumentContainer title="slugify" monospace>
       <p>
         The <Code>slugify</Code> function converts a string into a slug, which is a URL-friendly version of the string. It replaces spaces with hyphens and removes special characters, making it suitable for use in URLs.
       </p>
@@ -768,6 +768,6 @@ function Slugify() {
       <p>Example Case :</p>
       <InputText title="Param" value={param} onChange={(e) => setParam(() => e.target.value)} />
       Result : {slugify(param)}
-    </Container>
+    </DocumentContainer>
   );
 }
